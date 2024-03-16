@@ -1,5 +1,5 @@
 CXX := g++
-CFLAGS := -Wall -Iinc -fPIC -std=c++17 -O3 -lstdc++fs
+CFLAGS := -Wall -Iinc -fPIC -std=c++17 -O3
 LDFLAGS := -shared # Linker flags for creating a shared library
 
 # Define the target directory for the object files and the library
