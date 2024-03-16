@@ -1,28 +1,34 @@
-CXX=g++
-CFLAGS=-I./inc -g -Wall -Werror -std=c++11 -O3
-bin_dir = bin
-obj_dir = obj
+CXX := g++
+CFLAGS := -Wall -fPIC -std=c++17 -O3
+LDFLAGS := -shared # Linker flags for creating a shared library
 
-matmul: matmul1 matmul2 matmul3
+# Define the target directory for the object files and the library
+OBJDIR := obj
+LIBDIR := lib
 
-build_matmul1: src/matmul1.cpp obj/matfunc.o
-	$(CXX) $(CFLAGS) $^ -o bin/matmul1
-build_matmul2: src/matmul2.cpp obj/matfunc.o
-	$(CXX) $(CFLAGS) $^ -o bin/matmul2
-build_matmul3: src/matmul3.cpp obj/matfunc.o
-	$(CXX) $(CFLAGS) $^ -o bin/matmul3
-obj/matfunc.o: src/matfunc.cpp inc/matfunc.h
+# List of object files
+OBJECTS := $(OBJDIR)/AccessRule.o $(OBJDIR)/HierarchyNode.o $(OBJDIR)/HierarchyStructure.o \
+           $(OBJDIR)/PieceOfInformation.o $(OBJDIR)/RuleCollection.o $(OBJDIR)/SalusEngine.o \
+           $(OBJDIR)/SalusInterface.o
+
+# The final shared library name
+LIBRARY := $(LIBDIR)/libSalus.so
+
+# Default target
+all: $(LIBRARY)
+
+# Rule to create the shared library
+$(LIBRARY): $(OBJECTS)
+	@mkdir -p $(LIBDIR)
+	$(CXX) $(LDFLAGS) -o $@ $^
+
+# Rules for compiling source files into object files. Includes a check for the obj directory.
+$(OBJDIR)/%.o: src/%.cpp inc/%.h
+	@mkdir -p $(OBJDIR)
 	$(CXX) $(CFLAGS) -c $< -o $@
 
-matmul1: check_bin check_obj build_matmul1
-matmul2: check_bin check_obj build_matmul2
-matmul3: check_bin check_obj build_matmul3
-
-check_bin:
-	[ -d $(bin_dir) ] || mkdir -p $(bin_dir)
-
-check_obj:
-	[ -d $(obj_dir) ] || mkdir -p $(obj_dir)
-
+# Clean target to remove generated files
 clean:
-	rm -f obj/* bin/*
+	rm -f $(OBJDIR)/*.o $(LIBRARY)/*.so
+
+.PHONY: all clean
