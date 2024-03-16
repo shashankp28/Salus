@@ -6,10 +6,10 @@
 
 class AccessRule
 {
-    private:
-        CompareType compareType;
-        HierarchyNode* node;
-        int distance;
+private:
+    CompareType compareType;
+    HierarchyNode *node;
+    int distance;
 };
 
 #endif
