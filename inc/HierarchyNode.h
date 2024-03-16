@@ -10,13 +10,13 @@ class HierarchyNode
 private:
     std::string name;
     std::unordered_map<std::string, HierarchyNode *> parents;
-    HierarchyStructure *structure;
+    // HierarchyStructure *structure;
     std::unordered_map<std::string, HierarchyNode *> children;
 
 public:
-    HierarchyNode(std::string name, HierarchyStructure *structure, HierarchyNode *parent);
+    HierarchyNode(std::string name, HierarchyNode *parent);
     std::string getName();
-    HierarchyStructure *getStructure();
+    // HierarchyStructure *getStructure();
     std::unordered_map<std::string, HierarchyNode *> *getParents();
     std::unordered_map<std::string, HierarchyNode *> *getChildren();
     void addParent(HierarchyNode *parent);

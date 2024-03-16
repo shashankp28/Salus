@@ -1,5 +1,5 @@
 CXX := g++
-CFLAGS := -Wall -fPIC -std=c++17 -O3
+CFLAGS := -Wall -Iinc -fPIC -std=c++17 -O3 -lstdc++fs
 LDFLAGS := -shared # Linker flags for creating a shared library
 
 # Define the target directory for the object files and the library
@@ -29,6 +29,6 @@ $(OBJDIR)/%.o: src/%.cpp inc/%.h
 
 # Clean target to remove generated files
 clean:
-	rm -f $(OBJDIR)/*.o $(LIBRARY)/*.so
+	rm -f $(OBJDIR)/*.o $(LIBDIR)/*.so
 
 .PHONY: all clean

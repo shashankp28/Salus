@@ -1,13 +1,11 @@
-#include <Logging.h>
+#include <mutex>
 #include <iostream>
 #include <fstream>
-#include <chrono>
 #include <iomanip>
 #include <sstream>
-#include <filesystem>
 #include <thread>
-
-namespace fs = std::filesystem;
+#include <cstdio>
+#include <Logging.h>
 
 void Logging::init(std::string logFileName, unsigned maxFileSize, bool clearPrevious = false)
 {
@@ -22,26 +20,26 @@ std::string Logging::getTimeString()
     auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
     std::tm nowTm = *std::localtime(&nowAsTimeT);
     std::stringstream ss;
-    ss << std::put_time(&nowTm, "%Y-%m-%d|%H:%M:%S");
+    ss << std::put_time(&nowTm, "%Y-%m-%d_%H-%M-%S");
     return ss.str();
 }
 
 void Logging::checkMove()
 {
+    logFile.seekp(0, std::ios::end);
+    long fileSize = logFile.tellp();
+    logFile.seekp(0, std::ios::beg);
     unsigned convertRatio = 1024 * 1024;
-    if (logFile.tellp() / convertRatio > maxFileSize)
+    if (fileSize / convertRatio > maxFileSize)
     {
         logFile.close();
-        fs::path destinationPath = logFilePath + "_" + getTimeString() + ".old";
-        try
+        std::string destinationPath = logFilePath + "_" + getTimeString() + ".old";
+        if (std::rename(logFilePath.c_str(), destinationPath.c_str()) != 0)
         {
-            fs::rename(logFilePath, destinationPath);
-            logFile = std::ofstream(logFilePath, std::ios::trunc);
+            std::perror("Error renaming log file");
+            return;
         }
-        catch (const fs::filesystem_error &e)
-        {
-            std::cerr << e.what() << '\n';
-        }
+        logFile.open(logFilePath, std::ios::out | std::ios::trunc);
     }
 }
 

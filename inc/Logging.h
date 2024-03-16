@@ -1,10 +1,10 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
-#include <Constants.h>
 #include <fstream>
 #include <string>
 #include <mutex>
+#include <Constants.h>
 
 class Logging
 {

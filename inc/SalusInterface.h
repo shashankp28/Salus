@@ -8,6 +8,9 @@ class SalusInterface
 
 private:
     SalusEngine *engine;
+
+public:
+    SalusInterface();
 };
 
 #endif
