@@ -11,4 +11,13 @@ enum CompareType
     LESS_EQUAL
 };
 
+enum LogLevel
+{
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR,
+    FATAL,
+};
+
 #endif
