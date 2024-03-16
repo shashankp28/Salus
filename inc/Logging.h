@@ -1,10 +1,11 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
+#include <Constants.h>
 #include <fstream>
 #include <string>
 #include <mutex>
-#include <Constants.h>
+
 
 class Logging
 {
@@ -17,7 +18,7 @@ private:
     static void checkMove();
     static std::string getLevelString(LogLevel level);
     static std::string getTimeString();
-    static void logHelper(std::string message, LogLevel level = LogLevel::INFO);
+    static void logHelper(std::string message, LogLevel level);
 
 public:
     static void init(std::string logFileName, unsigned maxFileSize, bool clearPrevious = false);

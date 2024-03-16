@@ -1,13 +1,14 @@
-#include <mutex>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <mutex>
+#include <chrono>
 #include <sstream>
 #include <thread>
 #include <cstdio>
 #include <Logging.h>
 
-void Logging::init(std::string logFileName, unsigned maxFileSize, bool clearPrevious = false)
+void Logging::init(std::string logFileName, unsigned maxFileSize, bool clearPrevious)
 {
     logFilePath = "./log/" + logFileName;
     logFile = std::ofstream(logFileName, clearPrevious ? std::ios::trunc : std::ios::app);
@@ -62,7 +63,7 @@ std::string Logging::getLevelString(LogLevel level)
     }
 }
 
-void Logging::logHelper(std::string message, LogLevel level = LogLevel::INFO)
+void Logging::logHelper(std::string message, LogLevel level)
 {
     logMutex.lock();
     std::string fullMessage = "";
@@ -75,7 +76,7 @@ void Logging::logHelper(std::string message, LogLevel level = LogLevel::INFO)
     logMutex.unlock();
 }
 
-void Logging::log(std::string message, LogLevel level = LogLevel::INFO)
+void Logging::log(std::string message, LogLevel level)
 {
     std::thread logThread(&Logging::logHelper, std::move(message), level);
     logThread.detach();
