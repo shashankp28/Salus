@@ -9,7 +9,7 @@ LIBDIR := lib
 # List of object files
 OBJECTS := $(OBJDIR)/AccessRule.o $(OBJDIR)/HierarchyNode.o $(OBJDIR)/HierarchyStructure.o \
            $(OBJDIR)/PieceOfInformation.o $(OBJDIR)/RuleCollection.o $(OBJDIR)/SalusEngine.o \
-           $(OBJDIR)/SalusInterface.o
+           $(OBJDIR)/SalusInterface.o $(OBJDIR)/Logging.o
 
 # The final shared library name
 LIBRARY := $(LIBDIR)/libSalus.so
