@@ -3,6 +3,7 @@
 
 #include <Constants.h>
 #include <fstream>
+#include <string>
 #include <mutex>
 
 class Logging
@@ -11,6 +12,9 @@ class Logging
 private:
     static std::ofstream logFile;
     static std::mutex logMutex;
+
+public:
+    static void log(std::string message, LogLevel level = LogLevel::INFO);
 };
 
 #endif

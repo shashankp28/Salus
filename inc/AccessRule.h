@@ -19,7 +19,6 @@ public:
     void setNode(HierarchyNode *node);
     void setCompareType(CompareType compareType);
     void setDistance(int distance);
-    ~AccessRule();
 };
 
 #endif
