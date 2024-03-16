@@ -9,7 +9,7 @@ class HierarchyNode
 {
 private:
     std::string name;
-    HierarchyNode *parent;
+    std::unordered_map<std::string, HierarchyNode *> parents;
     HierarchyStructure *structure;
     std::unordered_map<std::string, HierarchyNode *> children;
 };
