@@ -15,7 +15,7 @@ private:
     std::unordered_map<std::string, HierarchyNode *> children;
 
 public:
-    HierarchyNode(std::string name, HierarchyNode *parent);
+    HierarchyNode(std::string name, HierarchyStructure *structure, HierarchyNode *parent);
     std::string getName();
     HierarchyStructure *getStructure();
     std::unordered_map<std::string, HierarchyNode *> *getParents();

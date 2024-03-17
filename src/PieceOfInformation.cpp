@@ -2,6 +2,7 @@
 
 PieceOfInformation::PieceOfInformation(std::string id, HierarchyNode *owner)
 {
+
     this->id = id;
     this->owner = owner;
     this->creationTime = std::time(0);
@@ -46,12 +47,18 @@ std::unordered_map<std::string, RuleCollection *> *PieceOfInformation::getWriteA
 
 void PieceOfInformation::setOwner(HierarchyNode *owner)
 {
-    this->owner = owner;
+    if(owner != nullptr)
+    {
+        this->owner = owner;
+    }
 }
 
 void PieceOfInformation::setLastModifiedBy(HierarchyNode *lastModifiedBy)
 {
-    this->lastModifiedBy = lastModifiedBy;
+    if (lastModifiedBy != nullptr)
+    {
+        this->lastModifiedBy = lastModifiedBy;
+    }
 }
 
 void PieceOfInformation::setLastModifiedTime(std::time_t lastModifiedTime)

@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <string>
 
-HierarchyNode::HierarchyNode(std::string name, HierarchyNode *parent)
+HierarchyNode::HierarchyNode(std::string name, HierarchyStructure *structure, HierarchyNode *parent)
 {
     this->name = name;
     this->structure = structure;
@@ -30,13 +30,11 @@ std::unordered_map<std::string, HierarchyNode *> *HierarchyNode::getChildren()
     return &children;
 }
 
-// TODO : Change here
 void HierarchyNode::addParent(HierarchyNode *parent)
 {
     if (parent != nullptr)
     {
         parents[parent->getName()] = parent;
-        parent->addChild(this);
     }
 }
 
@@ -53,7 +51,6 @@ void HierarchyNode::removeParent(HierarchyNode *parent)
     if (parent != nullptr)
     {
         parents.erase(parent->getName());
-        parent->removeChild(this);
     }
 }
 
