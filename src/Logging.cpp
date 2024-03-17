@@ -50,12 +50,15 @@ void Logging::init(std::string logFileName, unsigned maxFileSize, bool clearPrev
     {
         if (mkdir("./log", 0777) != 0)
         {
-            std::cerr << "Failed to create log directory!" << std::endl;
-            return;
+            throw std::runtime_error("Failed to create log directory!");
         }
     }
     logFilePath = "./log/" + logFileName;
     logFile = std::ofstream(logFileName, clearPrevious ? std::ios::trunc : std::ios::app);
+    if (!logFile.is_open())
+    {
+        throw std::runtime_error("Failed to open log file: " + logFilePath);
+    }
     maxFileSize = maxFileSize;
 }
 
