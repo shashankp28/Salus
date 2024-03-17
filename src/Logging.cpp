@@ -9,6 +9,11 @@
 #include <cstdio>
 #include <Logging.h>
 
+std::string Logging::logFilePath;
+std::ofstream Logging::logFile;
+std::mutex Logging::logMutex;
+unsigned Logging::maxFileSizeMB;
+
 bool directoryExists(const std::string &path)
 {
     struct stat info;
@@ -44,7 +49,7 @@ std::string getLevelString(LogLevel level)
     }
 }
 
-void Logging::init(std::string logFileName, unsigned maxFileSize, bool clearPrevious)
+void Logging::init(std::string logFileName, unsigned maxFileSizeMB, bool clearPrevious)
 {
     if (!directoryExists("./log"))
     {
@@ -59,7 +64,7 @@ void Logging::init(std::string logFileName, unsigned maxFileSize, bool clearPrev
     {
         throw std::runtime_error("Failed to open log file: " + logFilePath);
     }
-    maxFileSize = maxFileSize;
+    maxFileSizeMB = maxFileSizeMB;
 }
 
 void Logging::checkMove()
@@ -68,7 +73,7 @@ void Logging::checkMove()
     long fileSize = logFile.tellp();
     logFile.seekp(0, std::ios::beg);
     unsigned convertRatio = 1024 * 1024;
-    if (fileSize / convertRatio > maxFileSize)
+    if (fileSize / convertRatio > maxFileSizeMB)
     {
         logFile.close();
         std::string destinationPath = logFilePath + "_" + getTimeString() + ".old";
@@ -81,7 +86,7 @@ void Logging::checkMove()
     }
 }
 
-void Logging::logHelper(std::string message, LogLevel level)
+void Logging::logHelper(LogLevel level, std::string message)
 {
     logMutex.lock();
     std::string fullMessage = "";
@@ -94,8 +99,8 @@ void Logging::logHelper(std::string message, LogLevel level)
     logMutex.unlock();
 }
 
-void Logging::log(std::string message, LogLevel level)
+void Logging::log(LogLevel level, std::string message)
 {
-    std::thread logThread(&Logging::logHelper, std::move(message), level);
+    std::thread logThread(&Logging::logHelper, level, std::move(message));
     logThread.detach();
 }

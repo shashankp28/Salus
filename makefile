@@ -5,6 +5,7 @@ LDFLAGS := -shared # Linker flags for creating a shared library
 # Define the target directory for the object files and the library
 OBJDIR := obj
 LIBDIR := lib
+BINDIR := bin
 
 # List of object files
 OBJECTS := $(OBJDIR)/AccessRule.o $(OBJDIR)/HierarchyNode.o $(OBJDIR)/HierarchyStructure.o \
@@ -14,9 +15,23 @@ OBJECTS := $(OBJDIR)/AccessRule.o $(OBJDIR)/HierarchyNode.o $(OBJDIR)/HierarchyS
 # The final shared library name
 LIBRARY := $(LIBDIR)/libSalus.so
 
+# Run sanity check binary
+BINARY := $(BINDIR)/sanity
+
 
 # Default target
 lib: $(LIBRARY)
+sanity: $(BINARY) run_sanity
+run_sanity:
+	@echo "Running sanity check..."
+	@$(BINARY)
+	@echo "Sanity check passed."
+
+
+# Rule to create the sanity check binary
+$(BINARY): $(LIBRARY) src/sanity.cpp
+	@mkdir -p $(BINDIR)
+	$(CXX) $(CFLAGS) -o $@ src/sanity.cpp -L$(LIBDIR) -lSalus
 
 # Rule to create the shared library
 $(LIBRARY): $(OBJECTS)
@@ -30,6 +45,6 @@ $(OBJDIR)/%.o: src/%.cpp inc/%.h
 
 # Clean target to remove generated files
 clean:
-	rm -f $(OBJDIR)/*.o $(LIBDIR)/*.so
+	rm -f $(OBJDIR)/*.o $(LIBDIR)/*.so $(BINDIR)/*
 
 .PHONY: all clean

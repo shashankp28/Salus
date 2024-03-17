@@ -14,13 +14,13 @@ private:
     static std::string logFilePath;
     static std::ofstream logFile;
     static std::mutex logMutex;
-    static unsigned maxFileSize;
+    static unsigned maxFileSizeMB;
     static void checkMove();
-    static void logHelper(std::string message, LogLevel level);
+    static void logHelper(LogLevel level, std::string message);
 
 public:
-    static void init(std::string logFileName, unsigned maxFileSize, bool clearPrevious = false);
-    static void log(std::string message, LogLevel level = LogLevel::INFO);
+    static void init(std::string logFileName, unsigned maxFileSizeMB, bool clearPrevious = false);
+    static void log(LogLevel level, std::string message);
 };
 
 #endif
