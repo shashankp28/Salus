@@ -3,7 +3,8 @@
 
 #include <string>
 #include <unordered_map>
-#include <HierarchyStructure.h>
+
+class HierarchyStructure;
 
 class HierarchyNode
 {

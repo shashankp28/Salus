@@ -1,3 +1,4 @@
+#include <HierarchyNode.h>
 #include <HierarchyStructure.h>
 
 

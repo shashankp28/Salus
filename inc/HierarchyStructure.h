@@ -1,9 +1,10 @@
 #ifndef HIERRARCHYSTRUCTURE_H
 #define HIERRARCHYSTRUCTURE_H
 
-#include <HierarchyNode.h>
 #include <string>
 #include <unordered_map>
+
+class HierarchyNode;
 
 class HierarchyStructure
 {
