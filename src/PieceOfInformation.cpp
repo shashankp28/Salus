@@ -8,6 +8,8 @@ PieceOfInformation::PieceOfInformation(std::string id, HierarchyNode *owner)
     this->creationTime = std::time(0);
     this->lastModifiedBy = owner;
     this->lastModifiedTime = std::time(0);
+    this->readAccessList = new std::unordered_map<std::string, RuleCollection *>();
+    this->writeAccessList = new std::unordered_map<std::string, RuleCollection *>();
 }
 
 std::string PieceOfInformation::getId()
@@ -37,17 +39,17 @@ std::time_t PieceOfInformation::getLastModifiedTime()
 
 std::unordered_map<std::string, RuleCollection *> *PieceOfInformation::getReadAccessList()
 {
-    return &readAccessList;
+    return readAccessList;
 }
 
 std::unordered_map<std::string, RuleCollection *> *PieceOfInformation::getWriteAccessList()
 {
-    return &writeAccessList;
+    return writeAccessList;
 }
 
 void PieceOfInformation::setOwner(HierarchyNode *owner)
 {
-    if(owner != nullptr)
+    if (owner != nullptr)
     {
         this->owner = owner;
     }
@@ -70,7 +72,7 @@ void PieceOfInformation::addReadAccessRule(std::string userId, RuleCollection *r
 {
     if (ruleCollection != nullptr)
     {
-        readAccessList[userId] = ruleCollection;
+        readAccessList->insert(std::pair<std::string, RuleCollection *>(userId, ruleCollection));
     }
 }
 
@@ -78,16 +80,16 @@ void PieceOfInformation::addWriteAccessRule(std::string userId, RuleCollection *
 {
     if (ruleCollection != nullptr)
     {
-        writeAccessList[userId] = ruleCollection;
+        writeAccessList->insert(std::pair<std::string, RuleCollection *>(userId, ruleCollection));
     }
 }
 
 void PieceOfInformation::removeReadAccessRule(std::string userId)
 {
-    readAccessList.erase(userId);
+    readAccessList->erase(userId);
 }
 
 void PieceOfInformation::removeWriteAccessRule(std::string userId)
 {
-    writeAccessList.erase(userId);
+    writeAccessList->erase(userId);
 }

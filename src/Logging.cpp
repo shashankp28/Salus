@@ -64,6 +64,7 @@ void Logging::init(std::string logFileName, unsigned maxFileSizeMB, bool clearPr
     {
         throw std::runtime_error("Failed to open log file: " + logFilePath);
     }
+    logFile.close();
     maxFileSizeMB = maxFileSizeMB;
 }
 
@@ -89,12 +90,14 @@ void Logging::checkMove()
 void Logging::logHelper(LogLevel level, std::string message)
 {
     logMutex.lock();
+    logFile.open(logFilePath, std::ios::out | std::ios::app);
     std::string fullMessage = "";
     fullMessage += "[ " + getTimeString() + " ] ";
     fullMessage += "[ " + getLevelString(level) + " ]: ";
     fullMessage += message;
-    logFile << message << std::endl;
+    logFile << fullMessage << std::endl;
     logFile.flush();
+    logFile.close();
     checkMove();
     logMutex.unlock();
 }

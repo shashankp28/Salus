@@ -17,8 +17,8 @@ private:
     std::time_t creationTime;
     HierarchyNode *lastModifiedBy;
     std::time_t lastModifiedTime;
-    std::unordered_map<std::string, RuleCollection *> readAccessList;
-    std::unordered_map<std::string, RuleCollection *> writeAccessList;
+    std::unordered_map<std::string, RuleCollection *> *readAccessList;
+    std::unordered_map<std::string, RuleCollection *> *writeAccessList;
 
 public:
     PieceOfInformation(std::string id, HierarchyNode *owner);

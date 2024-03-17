@@ -11,7 +11,7 @@ class HierarchyStructure
 private:
     std::string name;
     HierarchyNode *root;
-    std::unordered_map<std::string, HierarchyNode *> members;
+    std::unordered_map<std::string, HierarchyNode *> *members;
 
 public:
     HierarchyStructure(std::string name, HierarchyNode *root);

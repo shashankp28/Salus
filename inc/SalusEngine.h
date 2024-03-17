@@ -9,9 +9,9 @@
 class SalusEngine
 {
 private:
-    std::unordered_map<std::string, PieceOfInformation *> informationBank;
-    std::unordered_map<std::string, RuleCollection *> ruleCollections;
-    std::unordered_map<std::string, HierarchyStructure *> hierarchies;
+    std::unordered_map<std::string, PieceOfInformation *> *informationBank;
+    std::unordered_map<std::string, RuleCollection *> *ruleCollections;
+    std::unordered_map<std::string, HierarchyStructure *> *hierarchies;
 
 public:
     SalusEngine(std::string topUser);

@@ -9,7 +9,7 @@ class RuleCollection
 {
 private:
     std::string name;
-    std::vector<AccessRule *> rules;
+    std::vector<AccessRule *> *rules;
 
 public:
     RuleCollection(std::string name);
