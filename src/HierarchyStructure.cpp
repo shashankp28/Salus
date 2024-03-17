@@ -6,43 +6,43 @@ HierarchyStructure::HierarchyStructure(std::string name)
     this->name = name;
 }
 
-// std::string HierarchyStructure::getName()
-// {
-//     return name;
-// }
+std::string HierarchyStructure::getName()
+{
+    return name;
+}
 
-// HierarchyNode *HierarchyStructure::getRoot()
-// {
-//     return root;
-// }
+HierarchyNode *HierarchyStructure::getRoot()
+{
+    return root;
+}
 
-// std::unordered_map<std::string, HierarchyNode *> *HierarchyStructure::getMembers()
-// {
-//     return &members;
-// }
+std::unordered_map<std::string, HierarchyNode *> *HierarchyStructure::getMembers()
+{
+    return &members;
+}
 
-// void HierarchyStructure::setRoot(HierarchyNode *root)
-// {
-//     this->root = root;
-// }
+void HierarchyStructure::setRoot(HierarchyNode *root)
+{
+    this->root = root;
+}
 
-// void HierarchyStructure::addMember(HierarchyNode *member)
-// {
-//     if (member != nullptr)
-//     {
-//         members[member->getName()] = member;
-//     }
-// }
+void HierarchyStructure::addMember(HierarchyNode *member)
+{
+    if (member != nullptr)
+    {
+        members[member->getName()] = member;
+    }
+}
 
-// void HierarchyStructure::removeMember(HierarchyNode *member)
-// {
-//     if (member != nullptr)
-//     {
-//         members.erase(member->getName());
-//     }
-// }
+void HierarchyStructure::removeMember(HierarchyNode *member)
+{
+    if (member != nullptr)
+    {
+        members.erase(member->getName());
+    }
+}
 
-// HierarchyNode *HierarchyStructure::getMember(std::string name)
-// {
-//     return members[name];
-// }
+HierarchyNode *HierarchyStructure::getMember(std::string name)
+{
+    return members[name];
+}

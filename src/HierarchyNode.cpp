@@ -6,7 +6,7 @@
 HierarchyNode::HierarchyNode(std::string name, HierarchyNode *parent)
 {
     this->name = name;
-    // this->structure = structure;
+    this->structure = structure;
     this->addParent(parent);
 }
 
@@ -15,10 +15,10 @@ std::string HierarchyNode::getName()
     return name;
 }
 
-// HierarchyStructure *HierarchyNode::getStructure()
-// {
-//     return structure;
-// }
+HierarchyStructure *HierarchyNode::getStructure()
+{
+    return structure;
+}
 
 std::unordered_map<std::string, HierarchyNode *> *HierarchyNode::getParents()
 {

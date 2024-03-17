@@ -21,7 +21,7 @@ public:
     void addRuleCollection(RuleCollection *ruleCollection);
     void removeRuleCollection(std::string name);
     RuleCollection *getRuleCollection(std::string name);
-    // void addHierarchy(HierarchyStructure *hierarchy);
+    void addHierarchy(HierarchyStructure *hierarchy);
     void removeHierarchy(std::string name);
     HierarchyStructure *getHierarchy(std::string name);
 };
