@@ -8,6 +8,7 @@
 *.obj
 obj
 bin
+log
 
 # Precompiled Headers
 *.gch

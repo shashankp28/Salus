@@ -26,7 +26,7 @@ std::string getTimeString()
     auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
     std::tm nowTm = *std::localtime(&nowAsTimeT);
     std::stringstream ss;
-    ss << std::put_time(&nowTm, "%Y-%m-%d_%H-%M-%S");
+    ss << std::put_time(&nowTm, "%d/%m/%Y-%H:%M:%S");
     return ss.str();
 }
 
@@ -59,7 +59,7 @@ void Logging::init(std::string logFileName, unsigned maxFileSizeMB, bool clearPr
         }
     }
     logFilePath = "./log/" + logFileName;
-    logFile = std::ofstream(logFileName, clearPrevious ? std::ios::trunc : std::ios::app);
+    logFile = std::ofstream(logFilePath, clearPrevious ? std::ios::trunc : std::ios::app);
     if (!logFile.is_open())
     {
         throw std::runtime_error("Failed to open log file: " + logFilePath);
@@ -76,21 +76,25 @@ void Logging::checkMove()
     unsigned convertRatio = 1024 * 1024;
     if (fileSize / convertRatio > maxFileSizeMB)
     {
-        logFile.close();
         std::string destinationPath = logFilePath + "_" + getTimeString() + ".old";
         if (std::rename(logFilePath.c_str(), destinationPath.c_str()) != 0)
         {
             std::perror("Error renaming log file");
             return;
         }
-        logFile.open(logFilePath, std::ios::out | std::ios::trunc);
+        logFile = std::ofstream(logFilePath, std::ios::trunc);
+        if (!logFile.is_open())
+        {
+            throw std::runtime_error("Failed to create new log file: " + logFilePath);
+        }
+        logFile.close();
     }
 }
 
 void Logging::logHelper(LogLevel level, std::string message)
 {
     logMutex.lock();
-    logFile.open(logFilePath, std::ios::out | std::ios::app);
+    logFile.open(logFilePath, std::ios::app);
     std::string fullMessage = "";
     fullMessage += "[ " + getTimeString() + " ] ";
     fullMessage += "[ " + getLevelString(level) + " ]: ";
