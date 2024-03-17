@@ -32,10 +32,7 @@ std::unordered_map<std::string, HierarchyNode *> *HierarchyNode::getChildren()
 
 void HierarchyNode::addParent(HierarchyNode *parent)
 {
-    if (parent != nullptr)
-    {
-        parents[parent->getName()] = parent;
-    }
+    parents[parent->getName()] = parent;
 }
 
 void HierarchyNode::addChild(HierarchyNode *child)

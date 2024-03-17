@@ -34,10 +34,7 @@ std::unordered_map<std::string, HierarchyNode *> *HierarchyStructure::getMembers
 
 void HierarchyStructure::setRoot(HierarchyNode *root)
 {
-    if (root != nullptr)
-    {
-        this->root = root;
-    }
+    this->root = root;
 }
 
 void HierarchyStructure::addMember(HierarchyNode *member)
