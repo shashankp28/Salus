@@ -29,9 +29,9 @@ run_sanity:
 
 
 # Rule to create the sanity check binary
-$(BINARY): $(LIBRARY) src/sanity.cpp
+$(BINARY): $(OBJECTS) src/sanity.cpp
 	@mkdir -p $(BINDIR)
-	$(CXX) $(CFLAGS) -o $@ src/sanity.cpp -L$(LIBDIR) -lSalus
+	$(CXX) $(CFLAGS) $(OBJECTS) -o $@ src/sanity.cpp
 
 # Rule to create the shared library
 $(LIBRARY): $(OBJECTS)
