@@ -16,8 +16,6 @@ private:
     static std::mutex logMutex;
     static unsigned maxFileSize;
     static void checkMove();
-    static std::string getLevelString(LogLevel level);
-    static std::string getTimeString();
     static void logHelper(std::string message, LogLevel level);
 
 public:

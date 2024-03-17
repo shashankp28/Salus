@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sys/stat.h>
 #include <iomanip>
 #include <mutex>
 #include <chrono>
@@ -8,14 +9,13 @@
 #include <cstdio>
 #include <Logging.h>
 
-void Logging::init(std::string logFileName, unsigned maxFileSize, bool clearPrevious)
+bool directoryExists(const std::string &path)
 {
-    logFilePath = "./log/" + logFileName;
-    logFile = std::ofstream(logFileName, clearPrevious ? std::ios::trunc : std::ios::app);
-    maxFileSize = maxFileSize;
+    struct stat info;
+    return stat(path.c_str(), &info) == 0 && (info.st_mode & S_IFDIR);
 }
 
-std::string Logging::getTimeString()
+std::string getTimeString()
 {
     auto now = std::chrono::system_clock::now();
     auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
@@ -23,6 +23,40 @@ std::string Logging::getTimeString()
     std::stringstream ss;
     ss << std::put_time(&nowTm, "%Y-%m-%d_%H-%M-%S");
     return ss.str();
+}
+
+std::string getLevelString(LogLevel level)
+{
+    switch (level)
+    {
+    case LogLevel::DEBUG:
+        return "DEBUG";
+    case LogLevel::INFO:
+        return "INFO";
+    case LogLevel::WARN:
+        return "WARN";
+    case LogLevel::ERROR:
+        return "ERROR";
+    case LogLevel::FATAL:
+        return "FATAL";
+    default:
+        return "UNKNOWN";
+    }
+}
+
+void Logging::init(std::string logFileName, unsigned maxFileSize, bool clearPrevious)
+{
+    if (!directoryExists("./log"))
+    {
+        if (mkdir("./log", 0777) != 0)
+        {
+            std::cerr << "Failed to create log directory!" << std::endl;
+            return;
+        }
+    }
+    logFilePath = "./log/" + logFileName;
+    logFile = std::ofstream(logFileName, clearPrevious ? std::ios::trunc : std::ios::app);
+    maxFileSize = maxFileSize;
 }
 
 void Logging::checkMove()
@@ -41,25 +75,6 @@ void Logging::checkMove()
             return;
         }
         logFile.open(logFilePath, std::ios::out | std::ios::trunc);
-    }
-}
-
-std::string Logging::getLevelString(LogLevel level)
-{
-    switch (level)
-    {
-    case LogLevel::DEBUG:
-        return "DEBUG";
-    case LogLevel::INFO:
-        return "INFO";
-    case LogLevel::WARN:
-        return "WARN";
-    case LogLevel::ERROR:
-        return "ERROR";
-    case LogLevel::FATAL:
-        return "FATAL";
-    default:
-        return "UNKNOWN";
     }
 }
 
