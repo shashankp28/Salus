@@ -61,3 +61,31 @@ void SalusEngine::addPieceOfInformation(std::string id, std::string owner,
     informationBank->insert({id, newPiece});
     Logging::log(LogLevel::INFO, "Piece of information " + id + " added successfully");
 }
+
+void SalusEngine::removePieceOfInformation(std::string id)
+{
+    if (informationBank->find(id) == informationBank->end())
+    {
+        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
+        throw std::runtime_error("Piece of information does not exist");
+    }
+    informationBank->erase(id);
+    Logging::log(LogLevel::WARN, "Piece of information " + id + " removed!");
+}
+
+void SalusEngine::changePieceOfInformationOwner(std::string id, std::string newOwner)
+{
+    if (informationBank->find(id) == informationBank->end())
+    {
+        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
+        throw std::runtime_error("Piece of information does not exist");
+    }
+    HierarchyNode *newOwnerNode = hierarchies->at("User")->getMember(newOwner);
+    if (newOwnerNode == nullptr)
+    {
+        Logging::log(LogLevel::ERROR, "Owner " + newOwner + " does not exist");
+        throw std::runtime_error("Owner does not exist");
+    }
+    informationBank->at(id)->setOwner(newOwnerNode);
+    Logging::log(LogLevel::INFO, "Piece of information " + id + " owner changed to " + newOwner);
+}
