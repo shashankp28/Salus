@@ -89,3 +89,21 @@ void SalusEngine::changePieceOfInformationOwner(std::string id, std::string newO
     informationBank->at(id)->setOwner(newOwnerNode);
     Logging::log(LogLevel::INFO, "Piece of information " + id + " owner changed to " + newOwner);
 }
+
+void SalusEngine::addCollectionToReadAccessList(std::string id, std::string ruleCollectionName)
+{
+    if (informationBank->find(id) == informationBank->end())
+    {
+        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
+        throw std::runtime_error("Piece of information does not exist");
+    }
+    RuleCollection *ruleCollection = ruleCollections->at(ruleCollectionName);
+    if (ruleCollection == nullptr)
+    {
+        Logging::log(LogLevel::ERROR, "Rule Collection " + ruleCollectionName + " does not exist");
+        throw std::runtime_error("Rule collection does not exist");
+    }
+    informationBank->at(id)->addReadAccessRule(ruleCollectionName, ruleCollection);
+    Logging::log(LogLevel::INFO, "Read access rule collection " +
+                                     ruleCollectionName + " added to " + id);
+}

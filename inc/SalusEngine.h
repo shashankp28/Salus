@@ -22,10 +22,10 @@ public:
     void removePieceOfInformation(std::string id);
     void changePieceOfInformationOwner(std::string id, std::string newOwner);
     // Access Control List Area
-    void addRuleToReaadAccessList(std::string id, std::string newRuleCollection);
-    void removeRuleFromReadAccessList(std::string id, std::string ruleCollection);
-    void addRuleToWriteAccessList(std::string id, std::string newRuleCollection);
-    void removeRuleFromWriteAccessList(std::string id, std::string ruleCollection);
+    void addCollectionToReadAccessList(std::string id, std::string ruleCollectionName);
+    void removeCollectionFromReadAccessList(std::string id, std::string ruleCollectionName);
+    void addCollectionToWriteAccessList(std::string id, std::string ruleCollectionName);
+    void removeCollectionFromWriteAccessList(std::string id, std::string ruleCollectionName);
     // Hierarchy Area
     void addNewHierarchyStructure(std::string name, std::string root);
     void addNewCriterionForHierarchy(std::string hierarchyName, std::string criterionName,
@@ -43,5 +43,14 @@ public:
                                 std::string criterionName, std::string compareType,
                                 int distacne);
     void removeRuleFromCollection(std::string collectionName, int index);
+    // Access Checker
+    bool canRead(std::string hierarchyName, std::string criterionName, std::string id);
+    bool canWrite(std::string hierarchyName, std::string criterionName, std::string id);
+    // Engine Metadata Reader
+    std::string getPieceOfInformation(std::string id);
+    std::string getRuleCollection(std::string name);
+    std::string getHierarchy(std::string name);
+    std::vector<std::string> showAllHierarchies();
+    std::vector<std::string> showAllRuleCollections();
 };
 #endif
