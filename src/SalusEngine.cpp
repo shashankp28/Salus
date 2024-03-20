@@ -107,3 +107,58 @@ void SalusEngine::addCollectionToReadAccessList(std::string id, std::string rule
     Logging::log(LogLevel::INFO, "Read access rule collection " +
                                      ruleCollectionName + " added to " + id);
 }
+
+void SalusEngine::removeCollectionFromReadAccessList(std::string id, std::string ruleCollectionName)
+{
+    if (informationBank->find(id) == informationBank->end())
+    {
+        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
+        throw std::runtime_error("Piece of information does not exist");
+    }
+    if (informationBank->at(id)->getReadAccessList()->at(ruleCollectionName) == nullptr)
+    {
+        Logging::log(LogLevel::ERROR, "Read access rule collection " +
+                                          ruleCollectionName + " does not exist in " + id);
+        throw std::runtime_error("Read access rule collection does not exist");
+    }
+    informationBank->at(id)->removeReadAccessRule(ruleCollectionName);
+    Logging::log(LogLevel::WARN, "Read access rule collection " +
+                                     ruleCollectionName + " removed from " + id);
+}
+
+void SalusEngine::addCollectionToWriteAccessList(std::string id, std::string ruleCollectionName)
+{
+    if (informationBank->find(id) == informationBank->end())
+    {
+        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
+        throw std::runtime_error("Piece of information does not exist");
+    }
+    RuleCollection *ruleCollection = ruleCollections->at(ruleCollectionName);
+    if (ruleCollection == nullptr)
+    {
+        Logging::log(LogLevel::ERROR, "Rule Collection " + ruleCollectionName + " does not exist");
+        throw std::runtime_error("Rule collection does not exist");
+    }
+    informationBank->at(id)->addWriteAccessRule(ruleCollectionName, ruleCollection);
+    Logging::log(LogLevel::INFO, "Write access rule collection " +
+                                     ruleCollectionName + " added to " + id);
+}
+
+void SalusEngine::removeCollectionFromWriteAccessList(std::string id,
+                                                      std::string ruleCollectionName)
+{
+    if (informationBank->find(id) == informationBank->end())
+    {
+        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
+        throw std::runtime_error("Piece of information does not exist");
+    }
+    if (informationBank->at(id)->getWriteAccessList()->at(ruleCollectionName) == nullptr)
+    {
+        Logging::log(LogLevel::ERROR, "Write access rule collection " +
+                                          ruleCollectionName + " does not exist in " + id);
+        throw std::runtime_error("Write access rule collection does not exist");
+    }
+    informationBank->at(id)->removeWriteAccessRule(ruleCollectionName);
+    Logging::log(LogLevel::WARN, "Write access rule collection " +
+                                     ruleCollectionName + " removed from " + id);
+}
