@@ -3,15 +3,23 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <vector>
 
-HierarchyNode::HierarchyNode(std::string name, HierarchyStructure *structure, HierarchyNode *parent)
+HierarchyNode::HierarchyNode(std::string name, HierarchyStructure *structure,
+                             std::vector<HierarchyNode *> *parent)
 {
     this->name = name;
     this->structure = structure;
     this->parents = new std::unordered_map<std::string, HierarchyNode *>();
-    this->parents->insert(std::pair<std::string, HierarchyNode *>(parent->getName(), parent));
+    if (parent != nullptr)
+    {
+        for (auto it = parent->begin(); it != parent->end(); it++)
+        {
+            (*it)->addChild(this);
+            this->addParent(*it);
+        }
+    }
     this->children = new std::unordered_map<std::string, HierarchyNode *>();
-    this->addParent(parent);
 }
 
 std::string HierarchyNode::getName()

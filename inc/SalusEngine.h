@@ -29,12 +29,12 @@ public:
     // Hierarchy Area
     void addNewHierarchyStructure(std::string name, std::string root);
     void addNewCriterionForHierarchy(std::string hierarchyName, std::string criterionName,
-                                     std::string parentCriterion);
+                                     std::vector<std::string> parentCriterion);
     void removeCriterionFromHierarchy(std::string hierarchyName, std::string criterionName);
     void renameCriterionFromHierarchy(std::string hierarchyName, std::string criterionName,
                                       std::string newCriterionName);
-    void changeCriterionParent(std::string hierarchyName, std::string criterionName,
-                               std::string newParent);
+    void changeCriterionParents(std::string hierarchyName, std::string criterionName,
+                               std::vector<std::string> newParents);
     void removeHierarchy(std::string name);
     // Rule Collection Area
     void addNewRuleCollection(std::string name);

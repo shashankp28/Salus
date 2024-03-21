@@ -2,6 +2,7 @@
 #define HIERARCHYNODE_H
 
 #include <string>
+#include <vector>
 #include <unordered_map>
 
 class HierarchyStructure;
@@ -15,7 +16,8 @@ private:
     std::unordered_map<std::string, HierarchyNode *> *children;
 
 public:
-    HierarchyNode(std::string name, HierarchyStructure *structure, HierarchyNode *parent);
+    HierarchyNode(std::string name, HierarchyStructure *structure,
+                  std::vector<HierarchyNode *> *parent);
     std::string getName();
     HierarchyStructure *getStructure();
     std::unordered_map<std::string, HierarchyNode *> *getParents();

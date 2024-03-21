@@ -178,7 +178,7 @@ void SalusEngine::addNewHierarchyStructure(std::string name, std::string root)
 }
 
 void SalusEngine::addNewCriterionForHierarchy(std::string hierarchyName, std::string criterionName,
-                                              std::string parentCriterion)
+                                              std::vector<std::string> parentCriterion)
 {
     if (hierarchies->find(hierarchyName) == hierarchies->end())
     {
@@ -186,26 +186,40 @@ void SalusEngine::addNewCriterionForHierarchy(std::string hierarchyName, std::st
         throw std::runtime_error("Hierarchy does not exist");
     }
     HierarchyStructure *hierarchy = hierarchies->at(hierarchyName);
-    HierarchyNode *parent = hierarchy->getMember(parentCriterion);
-    if (parent == nullptr)
+    if (hierarchy == nullptr)
     {
-        Logging::log(LogLevel::ERROR, "Parent criterion " + parentCriterion + " does not exist");
-        throw std::runtime_error("Parent criterion does not exist");
+        Logging::log(LogLevel::ERROR, "Hierarchy " + hierarchyName + " does not exist");
+        throw std::runtime_error("Hierarchy does not exist");
     }
     if (hierarchy->getMember(criterionName) != nullptr)
     {
         Logging::log(LogLevel::ERROR, "Criterion " + criterionName + " already exists");
         throw std::runtime_error("Criterion already exists");
     }
-    HierarchyNode *newCriterion = new HierarchyNode(criterionName, hierarchy, parent);
+    std::vector<HierarchyNode *> *parents = new std::vector<HierarchyNode *>();
+    for (auto it = parentCriterion.begin(); it != parentCriterion.end(); it++)
+    {
+        HierarchyNode *parent = hierarchy->getMember(*it);
+        if (parent == nullptr)
+        {
+            Logging::log(LogLevel::ERROR, "Criterion " + *it + " does not exist");
+            throw std::runtime_error("Criterion does not exist");
+        }
+        parents->push_back(parent);
+    }
+    HierarchyNode *newCriterion = new HierarchyNode(criterionName, hierarchy, parents);
     HierarchyState state = hierarchy->isConsistant();
     if (state != HierarchyState::CONSISTANT)
     {
+        for (auto it = parents->begin(); it != parents->end(); it++)
+        {
+            (*it)->removeChild(newCriterion);
+            newCriterion->removeParent(*it);
+        }
         std::string message = hierarchy->getInconsistantMessage(state);
         delete newCriterion;
         Logging::log(LogLevel::ERROR, message);
     }
-    parent->addChild(newCriterion);
     hierarchy->addMember(newCriterion);
     Logging::log(LogLevel::INFO, "Criterion " + criterionName + " added to " + hierarchyName);
 }
