@@ -9,6 +9,7 @@ HierarchyNode::HierarchyNode(std::string name, HierarchyStructure *structure, Hi
     this->name = name;
     this->structure = structure;
     this->parents = new std::unordered_map<std::string, HierarchyNode *>();
+    this->parents->insert(std::pair<std::string, HierarchyNode *>(parent->getName(), parent));
     this->children = new std::unordered_map<std::string, HierarchyNode *>();
     this->addParent(parent);
 }

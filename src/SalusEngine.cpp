@@ -162,3 +162,50 @@ void SalusEngine::removeCollectionFromWriteAccessList(std::string id,
     Logging::log(LogLevel::WARN, "Write access rule collection " +
                                      ruleCollectionName + " removed from " + id);
 }
+
+void SalusEngine::addNewHierarchyStructure(std::string name, std::string root)
+{
+    if (hierarchies->find(name) != hierarchies->end())
+    {
+        Logging::log(LogLevel::ERROR, "Hierarchy " + name + " already exists");
+        throw std::runtime_error("Hierarchy already exists");
+    }
+    HierarchyStructure *newHierarchy = new HierarchyStructure(name, nullptr);
+    HierarchyNode *rootNode = new HierarchyNode(root, newHierarchy, nullptr);
+    newHierarchy->setRoot(rootNode);
+    hierarchies->insert({name, newHierarchy});
+    Logging::log(LogLevel::INFO, "Hierarchy " + name + " added successfully");
+}
+
+void SalusEngine::addNewCriterionForHierarchy(std::string hierarchyName, std::string criterionName,
+                                              std::string parentCriterion)
+{
+    if (hierarchies->find(hierarchyName) == hierarchies->end())
+    {
+        Logging::log(LogLevel::ERROR, "Hierarchy " + hierarchyName + " does not exist");
+        throw std::runtime_error("Hierarchy does not exist");
+    }
+    HierarchyStructure *hierarchy = hierarchies->at(hierarchyName);
+    HierarchyNode *parent = hierarchy->getMember(parentCriterion);
+    if (parent == nullptr)
+    {
+        Logging::log(LogLevel::ERROR, "Parent criterion " + parentCriterion + " does not exist");
+        throw std::runtime_error("Parent criterion does not exist");
+    }
+    if (hierarchy->getMember(criterionName) != nullptr)
+    {
+        Logging::log(LogLevel::ERROR, "Criterion " + criterionName + " already exists");
+        throw std::runtime_error("Criterion already exists");
+    }
+    HierarchyNode *newCriterion = new HierarchyNode(criterionName, hierarchy, parent);
+    HierarchyState state = hierarchy->isConsistant();
+    if (state != HierarchyState::CONSISTANT)
+    {
+        std::string message = hierarchy->getInconsistantMessage(state);
+        delete newCriterion;
+        Logging::log(LogLevel::ERROR, message);
+    }
+    parent->addChild(newCriterion);
+    hierarchy->addMember(newCriterion);
+    Logging::log(LogLevel::INFO, "Criterion " + criterionName + " added to " + hierarchyName);
+}

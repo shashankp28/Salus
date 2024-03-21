@@ -1,6 +1,7 @@
 #include <HierarchyNode.h>
 #include <HierarchyStructure.h>
 #include <queue>
+#include <Logging.h>
 
 HierarchyStructure::HierarchyStructure(std::string name, HierarchyNode *root)
 {
@@ -154,4 +155,25 @@ bool HierarchyStructure::hasCycle()
         }
     }
     return count != members->size();
+}
+
+std::string HierarchyStructure::getInconsistantMessage(HierarchyState state)
+{
+    std::string message;
+    switch (state)
+    {
+    case HierarchyState::LOW_ROOT:
+        message = "Hierarchy " + name + " has a node with no parent";
+        break;
+    case HierarchyState::CYCLE:
+        message = "Hierarchy " + name + " has a cycle";
+        break;
+    case HierarchyState::DISJOINT:
+        message = "Hierarchy " + name + " has disjoint nodes";
+        break;
+    default:
+        break;
+    }
+    Logging::log(LogLevel::ERROR, message);
+    return message;
 }

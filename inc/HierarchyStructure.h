@@ -16,7 +16,6 @@ private:
     bool isRootHighest();
     bool hasCycle();
     bool allNodesReachable();
-    HierarchyState isConsistant();
 
 public:
     HierarchyStructure(std::string name, HierarchyNode *root);
@@ -28,6 +27,8 @@ public:
     void addMember(HierarchyNode *member);
     void removeMember(HierarchyNode *member);
     void removeMember(std::string name);
+    HierarchyState isConsistant();
+    std::string getInconsistantMessage(HierarchyState state);
 };
 
 #endif
