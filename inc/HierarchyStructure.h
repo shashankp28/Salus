@@ -2,6 +2,7 @@
 #define HIERRARCHYSTRUCTURE_H
 
 #include <string>
+#include <Constants.h>
 #include <unordered_map>
 
 class HierarchyNode;
@@ -12,6 +13,10 @@ private:
     std::string name;
     HierarchyNode *root;
     std::unordered_map<std::string, HierarchyNode *> *members;
+    bool isRootHighest();
+    bool hasCycle();
+    bool allNodesReachable();
+    HierarchyState isConsistant();
 
 public:
     HierarchyStructure(std::string name, HierarchyNode *root);

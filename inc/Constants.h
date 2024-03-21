@@ -20,4 +20,12 @@ enum LogLevel
     FATAL,
 };
 
+enum HierarchyState
+{
+    CYCLE,
+    LOW_ROOT,
+    DISJOINT,
+    CONSISTANT,
+};
+
 #endif

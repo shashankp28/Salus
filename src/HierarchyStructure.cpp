@@ -1,5 +1,6 @@
 #include <HierarchyNode.h>
 #include <HierarchyStructure.h>
+#include <queue>
 
 HierarchyStructure::HierarchyStructure(std::string name, HierarchyNode *root)
 {
@@ -57,4 +58,94 @@ void HierarchyStructure::removeMember(HierarchyNode *member)
 void HierarchyStructure::removeMember(std::string name)
 {
     members->erase(name);
+}
+
+HierarchyState HierarchyStructure::isConsistant()
+{
+    if (!isRootHighest())
+    {
+        return HierarchyState::LOW_ROOT;
+    }
+    if (hasCycle())
+    {
+        return HierarchyState::CYCLE;
+    }
+    if (!allNodesReachable())
+    {
+        return HierarchyState::DISJOINT;
+    }
+    return HierarchyState::CONSISTANT;
+}
+
+bool HierarchyStructure::isRootHighest()
+{
+    if (root == nullptr || root->getParents()->size() == 0)
+    {
+        return true;
+    }
+}
+
+bool HierarchyStructure::allNodesReachable()
+{
+    std::unordered_map<std::string, bool> visited;
+    for (auto it = members->begin(); it != members->end(); it++)
+    {
+        visited.insert({it->first, false});
+    }
+    std::queue<HierarchyNode *> queue;
+    queue.push(root);
+    while (!queue.empty())
+    {
+        HierarchyNode *current = queue.front();
+        queue.pop();
+        visited[current->getName()] = true;
+        for (auto it = current->getChildren()->begin(); it != current->getChildren()->end(); it++)
+        {
+            if (!visited[it->first])
+            {
+                queue.push(it->second);
+            }
+        }
+    }
+    for (auto it = visited.begin(); it != visited.end(); it++)
+    {
+        if (!it->second)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool HierarchyStructure::hasCycle()
+{
+    std::unordered_map<std::string, int> inDegree;
+    for (auto it = members->begin(); it != members->end(); it++)
+    {
+        inDegree.insert({it->first, it->second->getParents()->size()});
+    }
+    std::queue<HierarchyNode *> queue;
+    for (auto it = inDegree.begin(); it != inDegree.end(); it++)
+    {
+        if (it->second == 0)
+        {
+            queue.push(members->at(it->first));
+        }
+    }
+    int count = 0;
+    while (!queue.empty())
+    {
+        HierarchyNode *current = queue.front();
+        queue.pop();
+        count++;
+        for (auto it = current->getChildren()->begin(); it != current->getChildren()->end(); it++)
+        {
+            inDegree[it->first]--;
+            if (inDegree[it->first] == 0)
+            {
+                queue.push(it->second);
+            }
+        }
+    }
+    return count != members->size();
 }
