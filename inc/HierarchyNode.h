@@ -17,14 +17,17 @@ private:
 
 public:
     HierarchyNode(std::string name, HierarchyStructure *structure,
-                  std::vector<HierarchyNode *> *parent);
+                  std::vector<HierarchyNode *> *parents);
     std::string getName();
     HierarchyStructure *getStructure();
     std::unordered_map<std::string, HierarchyNode *> *getParents();
     std::unordered_map<std::string, HierarchyNode *> *getChildren();
     void addParent(HierarchyNode *parent);
+    void HierarchyNode::addParents(std::vector<HierarchyNode *> *parents);
+    void setName(std::string newName);
     void addChild(HierarchyNode *child);
     void removeParent(HierarchyNode *parent);
+    void removeParents(std::vector<HierarchyNode *> *parents);
     void removeChild(HierarchyNode *child);
 };
 

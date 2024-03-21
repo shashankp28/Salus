@@ -28,14 +28,16 @@ void SalusEngine::addPieceOfInformation(std::string id, std::string owner,
 {
     if (informationBank->find(id) != informationBank->end())
     {
-        Logging::log(LogLevel::ERROR, "Piece of information " + id + " already exists");
-        throw std::runtime_error("Piece of information already exists");
+        std::string message = "Piece of information " + id + " already exists";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     HierarchyNode *ownerNode = hierarchies->at("User")->getMember(owner);
     if (ownerNode == nullptr)
     {
-        Logging::log(LogLevel::ERROR, "Owner " + owner + " does not exist");
-        throw std::runtime_error("Owner does not exist");
+        std::string message = "Owner " + owner + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     PieceOfInformation *newPiece = new PieceOfInformation(id, ownerNode);
     for (auto it = readAccessList.begin(); it != readAccessList.end(); it++)
@@ -43,8 +45,9 @@ void SalusEngine::addPieceOfInformation(std::string id, std::string owner,
         RuleCollection *ruleCollection = ruleCollections->at(*it);
         if (ruleCollection == nullptr)
         {
-            Logging::log(LogLevel::ERROR, "Read Rule Collection " + *it + " does not exist");
-            throw std::runtime_error("Read access rule collection does not exist");
+            std::string message = "Read Rule Collection " + *it + " does not exist";
+            Logging::log(LogLevel::ERROR, message);
+            throw std::runtime_error(message);
         }
         newPiece->addReadAccessRule(*it, ruleCollection);
     }
@@ -53,8 +56,9 @@ void SalusEngine::addPieceOfInformation(std::string id, std::string owner,
         RuleCollection *ruleCollection = ruleCollections->at(*it);
         if (ruleCollection == nullptr)
         {
-            Logging::log(LogLevel::ERROR, "Write Rule Collection " + *it + " does not exist");
-            throw std::runtime_error("Write access rule collection does not exist");
+            std::string message = "Write Rule Collection " + *it + " does not exist";
+            Logging::log(LogLevel::ERROR, message);
+            throw std::runtime_error(message);
         }
         newPiece->addWriteAccessRule(*it, ruleCollection);
     }
@@ -66,8 +70,9 @@ void SalusEngine::removePieceOfInformation(std::string id)
 {
     if (informationBank->find(id) == informationBank->end())
     {
-        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
-        throw std::runtime_error("Piece of information does not exist");
+        std::string message = "Piece of information " + id + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     informationBank->erase(id);
     Logging::log(LogLevel::WARN, "Piece of information " + id + " removed!");
@@ -77,14 +82,16 @@ void SalusEngine::changePieceOfInformationOwner(std::string id, std::string newO
 {
     if (informationBank->find(id) == informationBank->end())
     {
-        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
-        throw std::runtime_error("Piece of information does not exist");
+        std::string message = "Piece of information " + id + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     HierarchyNode *newOwnerNode = hierarchies->at("User")->getMember(newOwner);
     if (newOwnerNode == nullptr)
     {
-        Logging::log(LogLevel::ERROR, "Owner " + newOwner + " does not exist");
-        throw std::runtime_error("Owner does not exist");
+        std::string message = "Owner " + newOwner + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     informationBank->at(id)->setOwner(newOwnerNode);
     Logging::log(LogLevel::INFO, "Piece of information " + id + " owner changed to " + newOwner);
@@ -94,13 +101,15 @@ void SalusEngine::addCollectionToReadAccessList(std::string id, std::string rule
 {
     if (informationBank->find(id) == informationBank->end())
     {
-        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
-        throw std::runtime_error("Piece of information does not exist");
+        std::string message = "Piece of information " + id + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     RuleCollection *ruleCollection = ruleCollections->at(ruleCollectionName);
     if (ruleCollection == nullptr)
     {
-        Logging::log(LogLevel::ERROR, "Rule Collection " + ruleCollectionName + " does not exist");
+        std::string message = "Rule Collection " + ruleCollectionName + " does not exist ";
+        Logging::log(LogLevel::ERROR, message);
         throw std::runtime_error("Rule collection does not exist");
     }
     informationBank->at(id)->addReadAccessRule(ruleCollectionName, ruleCollection);
@@ -112,14 +121,16 @@ void SalusEngine::removeCollectionFromReadAccessList(std::string id, std::string
 {
     if (informationBank->find(id) == informationBank->end())
     {
-        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
-        throw std::runtime_error("Piece of information does not exist");
+        std::string message = "Piece of information " + id + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     if (informationBank->at(id)->getReadAccessList()->at(ruleCollectionName) == nullptr)
     {
-        Logging::log(LogLevel::ERROR, "Read access rule collection " +
-                                          ruleCollectionName + " does not exist in " + id);
-        throw std::runtime_error("Read access rule collection does not exist");
+        std::string message = "Read access rule collection " +
+                              ruleCollectionName + " does not exist in " + id;
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     informationBank->at(id)->removeReadAccessRule(ruleCollectionName);
     Logging::log(LogLevel::WARN, "Read access rule collection " +
@@ -130,14 +141,16 @@ void SalusEngine::addCollectionToWriteAccessList(std::string id, std::string rul
 {
     if (informationBank->find(id) == informationBank->end())
     {
-        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
-        throw std::runtime_error("Piece of information does not exist");
+        std::string message = "Piece of information " + id + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     RuleCollection *ruleCollection = ruleCollections->at(ruleCollectionName);
     if (ruleCollection == nullptr)
     {
-        Logging::log(LogLevel::ERROR, "Rule Collection " + ruleCollectionName + " does not exist");
-        throw std::runtime_error("Rule collection does not exist");
+        std::string message = "Rule Collection " + ruleCollectionName + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     informationBank->at(id)->addWriteAccessRule(ruleCollectionName, ruleCollection);
     Logging::log(LogLevel::INFO, "Write access rule collection " +
@@ -149,14 +162,16 @@ void SalusEngine::removeCollectionFromWriteAccessList(std::string id,
 {
     if (informationBank->find(id) == informationBank->end())
     {
-        Logging::log(LogLevel::ERROR, "Piece of information " + id + " does not exist");
-        throw std::runtime_error("Piece of information does not exist");
+        std::string message = "Piece of information " + id + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     if (informationBank->at(id)->getWriteAccessList()->at(ruleCollectionName) == nullptr)
     {
-        Logging::log(LogLevel::ERROR, "Write access rule collection " +
-                                          ruleCollectionName + " does not exist in " + id);
-        throw std::runtime_error("Write access rule collection does not exist");
+        std::string message = "Write access rule collection " +
+                              ruleCollectionName + " does not exist in " + id;
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     informationBank->at(id)->removeWriteAccessRule(ruleCollectionName);
     Logging::log(LogLevel::WARN, "Write access rule collection " +
@@ -167,8 +182,9 @@ void SalusEngine::addNewHierarchyStructure(std::string name, std::string root)
 {
     if (hierarchies->find(name) != hierarchies->end())
     {
-        Logging::log(LogLevel::ERROR, "Hierarchy " + name + " already exists");
-        throw std::runtime_error("Hierarchy already exists");
+        std::string message = "Hierarchy " + name + " already exists";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     HierarchyStructure *newHierarchy = new HierarchyStructure(name, nullptr);
     HierarchyNode *rootNode = new HierarchyNode(root, newHierarchy, nullptr);
@@ -182,19 +198,16 @@ void SalusEngine::addNewCriterionForHierarchy(std::string hierarchyName, std::st
 {
     if (hierarchies->find(hierarchyName) == hierarchies->end())
     {
-        Logging::log(LogLevel::ERROR, "Hierarchy " + hierarchyName + " does not exist");
-        throw std::runtime_error("Hierarchy does not exist");
+        std::string message = "Hierarchy " + hierarchyName + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     HierarchyStructure *hierarchy = hierarchies->at(hierarchyName);
-    if (hierarchy == nullptr)
-    {
-        Logging::log(LogLevel::ERROR, "Hierarchy " + hierarchyName + " does not exist");
-        throw std::runtime_error("Hierarchy does not exist");
-    }
     if (hierarchy->getMember(criterionName) != nullptr)
     {
-        Logging::log(LogLevel::ERROR, "Criterion " + criterionName + " already exists");
-        throw std::runtime_error("Criterion already exists");
+        std::string message = "Criterion " + criterionName + " already exists";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
     }
     std::vector<HierarchyNode *> *parents = new std::vector<HierarchyNode *>();
     for (auto it = parentCriterion.begin(); it != parentCriterion.end(); it++)
@@ -202,8 +215,9 @@ void SalusEngine::addNewCriterionForHierarchy(std::string hierarchyName, std::st
         HierarchyNode *parent = hierarchy->getMember(*it);
         if (parent == nullptr)
         {
-            Logging::log(LogLevel::ERROR, "Criterion " + *it + " does not exist");
-            throw std::runtime_error("Criterion does not exist");
+            std::string message = "Criterion " + *it + " does not exist";
+            Logging::log(LogLevel::ERROR, message);
+            throw std::runtime_error(message);
         }
         parents->push_back(parent);
     }
@@ -222,4 +236,162 @@ void SalusEngine::addNewCriterionForHierarchy(std::string hierarchyName, std::st
     }
     hierarchy->addMember(newCriterion);
     Logging::log(LogLevel::INFO, "Criterion " + criterionName + " added to " + hierarchyName);
+}
+
+void SalusEngine::removeCriterionFromHierarchy(std::string hierarchyName, std::string criterionName)
+{
+    if (hierarchies->find(hierarchyName) == hierarchies->end())
+    {
+        std::string message = "Hierarchy " + hierarchyName + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    HierarchyStructure *hierarchy = hierarchies->at(hierarchyName);
+    HierarchyNode *targetNode = hierarchy->getMember(criterionName);
+    if (targetNode == nullptr)
+    {
+        std::string message = "Criterion " + criterionName + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    if (targetNode->getChildren()->size() != 0)
+    {
+        std::string message = "Criterion " + criterionName + " is not on the edge!";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    for (auto it = targetNode->getParents()->begin(); it != targetNode->getParents()->end(); it++)
+    {
+        it->second->removeChild(targetNode);
+    }
+    // Remove all access rules with this criterion
+    for (auto it = ruleCollections->begin(); it != ruleCollections->end(); it++)
+    {
+        RuleCollection *ruleCollection = it->second;
+        std::vector<int> indicesToRemove = std::vector<int>();
+        for (int i = 0; i < ruleCollection->getRules()->size(); i++)
+        {
+            if (ruleCollection->getRules()->at(i)->getNode() == targetNode)
+            {
+                indicesToRemove.push_back(i);
+            }
+        }
+        for (auto it = indicesToRemove.begin(); it != indicesToRemove.end(); it++)
+        {
+            ruleCollection->getRules()->erase(ruleCollection->getRules()->begin() + *it);
+        }
+    }
+    delete targetNode;
+    hierarchy->removeMember(criterionName);
+    Logging::log(LogLevel::WARN, "Criterion " + criterionName + " removed from " + hierarchyName);
+}
+
+void SalusEngine::renameCriterionFromHierarchy(std::string hierarchyName, std::string criterionName,
+                                               std::string newCriterionName)
+{
+    if (hierarchies->find(hierarchyName) == hierarchies->end())
+    {
+        std::string message = "Hierarchy " + hierarchyName + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    HierarchyStructure *hierarchy = hierarchies->at(hierarchyName);
+    HierarchyNode *targetNode = hierarchy->getMember(criterionName);
+    if (targetNode == nullptr)
+    {
+        std::string message = "Criterion " + criterionName + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    if (hierarchy->getMember(newCriterionName) != nullptr)
+    {
+        std::string message = "Criterion " + newCriterionName + " already exists";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    targetNode->setName(newCriterionName);
+    hierarchy->addMember(targetNode);
+    Logging::log(LogLevel::WARN, "Criterion " + criterionName + " renamed to " + newCriterionName);
+}
+
+void SalusEngine::changeCriterionParents(std::string hierarchyName, std::string criterionName,
+                                         std::vector<std::string> newParents)
+{
+    if (hierarchies->find(hierarchyName) == hierarchies->end())
+    {
+        std::string message = "Hierarchy " + hierarchyName + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    HierarchyStructure *hierarchy = hierarchies->at(hierarchyName);
+    HierarchyNode *targetNode = hierarchy->getMember(criterionName);
+    if (targetNode == nullptr)
+    {
+        std::string message = "Criterion " + criterionName + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    std::vector<HierarchyNode *> *newParentsNodes = new std::vector<HierarchyNode *>();
+    for (auto it = newParents.begin(); it != newParents.end(); it++)
+    {
+        HierarchyNode *parent = hierarchy->getMember(*it);
+        if (parent == nullptr)
+        {
+            std::string message = "Criterion " + *it + " does not exist";
+            Logging::log(LogLevel::ERROR, message);
+            throw std::runtime_error(message);
+        }
+        newParentsNodes->push_back(parent);
+    }
+    std::vector<HierarchyNode *> *oldParents = new std::vector<HierarchyNode *>();
+    for (auto it = targetNode->getParents()->begin(); it != targetNode->getParents()->end(); it++)
+    {
+        oldParents->push_back(it->second);
+    }
+    targetNode->removeParents(oldParents);
+    targetNode->addParents(newParentsNodes);
+    HierarchyState state = hierarchy->isConsistant();
+    if (state != HierarchyState::CONSISTANT)
+    {
+        targetNode->removeParents(newParentsNodes);
+        targetNode->addParents(oldParents);
+        std::string message = hierarchy->getInconsistantMessage(state);
+        Logging::log(LogLevel::ERROR, message);
+    }
+    Logging::log(LogLevel::WARN, "Criterion " + criterionName + " parents changed");
+}
+
+void SalusEngine::removeHierarchy(std::string name)
+{
+    if (hierarchies->find(name) == hierarchies->end())
+    {
+        std::string message = "Hierarchy " + name + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    // For all criterion remove all corresponding Access Rules
+    HierarchyStructure *hierarchy = hierarchies->at(name);
+    for (auto it = hierarchy->getMembers()->begin(); it != hierarchy->getMembers()->end(); it++)
+    {
+        HierarchyNode *criterion = it->second;
+        for (auto it = ruleCollections->begin(); it != ruleCollections->end(); it++)
+        {
+            RuleCollection *ruleCollection = it->second;
+            std::vector<int> indicesToRemove = std::vector<int>();
+            for (int i = 0; i < ruleCollection->getRules()->size(); i++)
+            {
+                if (ruleCollection->getRules()->at(i)->getNode() == criterion)
+                {
+                    indicesToRemove.push_back(i);
+                }
+            }
+            for (auto it = indicesToRemove.begin(); it != indicesToRemove.end(); it++)
+            {
+                ruleCollection->getRules()->erase(ruleCollection->getRules()->begin() + *it);
+            }
+        }
+    }
+    delete hierarchy;
+    hierarchies->erase(name);
+    Logging::log(LogLevel::WARN, "Hierarchy " + name + " removed");
 }

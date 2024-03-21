@@ -6,19 +6,12 @@
 #include <vector>
 
 HierarchyNode::HierarchyNode(std::string name, HierarchyStructure *structure,
-                             std::vector<HierarchyNode *> *parent)
+                             std::vector<HierarchyNode *> *parents)
 {
     this->name = name;
     this->structure = structure;
     this->parents = new std::unordered_map<std::string, HierarchyNode *>();
-    if (parent != nullptr)
-    {
-        for (auto it = parent->begin(); it != parent->end(); it++)
-        {
-            (*it)->addChild(this);
-            this->addParent(*it);
-        }
-    }
+    this->addParents(parents);
     this->children = new std::unordered_map<std::string, HierarchyNode *>();
 }
 
@@ -42,11 +35,28 @@ std::unordered_map<std::string, HierarchyNode *> *HierarchyNode::getChildren()
     return children;
 }
 
+void HierarchyNode::setName(std::string newName)
+{
+    name = newName;
+}
+
 void HierarchyNode::addParent(HierarchyNode *parent)
 {
     if (parent != nullptr)
     {
         parents->insert(std::pair<std::string, HierarchyNode *>(parent->getName(), parent));
+    }
+}
+
+void HierarchyNode::addParents(std::vector<HierarchyNode *> *parents)
+{
+    if (parents != nullptr)
+    {
+        for (auto it = parents->begin(); it != parents->end(); it++)
+        {
+            (*it)->addChild(this);
+            this->addParent(*it);
+        }
     }
 }
 
@@ -63,6 +73,18 @@ void HierarchyNode::removeParent(HierarchyNode *parent)
     if (parent != nullptr)
     {
         parents->erase(parent->getName());
+    }
+}
+
+void HierarchyNode::removeParents(std::vector<HierarchyNode *> *parents)
+{
+    if (parents != nullptr)
+    {
+        for (auto it = parents->begin(); it != parents->end(); it++)
+        {
+            (*it)->removeChild(this);
+            this->removeParent(*it);
+        }
     }
 }
 
