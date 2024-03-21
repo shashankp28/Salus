@@ -88,6 +88,7 @@ bool HierarchyStructure::isRootHighest()
             return false;
         }
     }
+    return true;
 }
 
 bool HierarchyStructure::allNodesReachable()
@@ -154,7 +155,7 @@ bool HierarchyStructure::hasCycle()
             }
         }
     }
-    return count != members->size();
+    return count != (int)members->size();
 }
 
 std::string HierarchyStructure::getInconsistantMessage(HierarchyState state)
