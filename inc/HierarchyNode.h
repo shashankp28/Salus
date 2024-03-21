@@ -23,7 +23,7 @@ public:
     std::unordered_map<std::string, HierarchyNode *> *getParents();
     std::unordered_map<std::string, HierarchyNode *> *getChildren();
     void addParent(HierarchyNode *parent);
-    void HierarchyNode::addParents(std::vector<HierarchyNode *> *parents);
+    void addParents(std::vector<HierarchyNode *> *parents);
     void setName(std::string newName);
     void addChild(HierarchyNode *child);
     void removeParent(HierarchyNode *parent);

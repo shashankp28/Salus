@@ -269,7 +269,7 @@ void SalusEngine::removeCriterionFromHierarchy(std::string hierarchyName, std::s
     {
         RuleCollection *ruleCollection = it->second;
         std::vector<int> indicesToRemove = std::vector<int>();
-        for (int i = 0; i < ruleCollection->getRules()->size(); i++)
+        for (int i = 0; i < (int)ruleCollection->getRules()->size(); i++)
         {
             if (ruleCollection->getRules()->at(i)->getNode() == targetNode)
             {
@@ -378,7 +378,7 @@ void SalusEngine::removeHierarchy(std::string name)
         {
             RuleCollection *ruleCollection = it->second;
             std::vector<int> indicesToRemove = std::vector<int>();
-            for (int i = 0; i < ruleCollection->getRules()->size(); i++)
+            for (int i = 0; i < (int)ruleCollection->getRules()->size(); i++)
             {
                 if (ruleCollection->getRules()->at(i)->getNode() == criterion)
                 {
