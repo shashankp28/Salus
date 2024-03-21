@@ -79,14 +79,19 @@ HierarchyState HierarchyStructure::isConsistant()
 
 bool HierarchyStructure::isRootHighest()
 {
-    if (root == nullptr || root->getParents()->size() == 0)
+    // Except for the root, all nodes must have at least one parent
+    for (auto it = members->begin(); it != members->end(); it++)
     {
-        return true;
+        if (it->second->getParents()->size() == 0 && it->second != root)
+        {
+            return false;
+        }
     }
 }
 
 bool HierarchyStructure::allNodesReachable()
 {
+    // All nodes must be reachable from the root
     std::unordered_map<std::string, bool> visited;
     for (auto it = members->begin(); it != members->end(); it++)
     {
@@ -119,6 +124,7 @@ bool HierarchyStructure::allNodesReachable()
 
 bool HierarchyStructure::hasCycle()
 {
+    // The graph must be a DAG
     std::unordered_map<std::string, int> inDegree;
     for (auto it = members->begin(); it != members->end(); it++)
     {
