@@ -4,6 +4,7 @@
 #include <HierarchyNode.h>
 #include <AccessRule.h>
 #include <RuleCollection.h>
+#include <Constants.h>
 #include <string>
 #include <ctime>
 #include <unordered_map>
@@ -31,11 +32,12 @@ public:
     std::unordered_map<std::string, RuleCollection *> *getWriteAccessList();
     void setOwner(HierarchyNode *owner);
     void setLastModifiedBy(HierarchyNode *lastModifiedBy);
-    void setLastModifiedTime(std::time_t lastModifiedTime);
-    void addReadAccessRule(std::string userId, RuleCollection *ruleCollection);
-    void addWriteAccessRule(std::string userId, RuleCollection *ruleCollection);
-    void removeReadAccessRule(std::string userId);
-    void removeWriteAccessRule(std::string userId);
+    void setLastModifiedTime();
+    void addReadAccessRule(std::string id, RuleCollection *ruleCollection);
+    void addWriteAccessRule(std::string id, RuleCollection *ruleCollection);
+    void removeReadAccessRule(std::string id);
+    void removeWriteAccessRule(std::string id);
+    bool canAccess(HierarchyNode *criterion, AccessType type);
 };
 
 #endif

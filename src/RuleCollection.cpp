@@ -47,3 +47,14 @@ void RuleCollection::removeRule(int index)
         rules->erase(rules->begin() + index);
     }
 }
+
+bool RuleCollection::canAccess(HierarchyNode *criterion)
+{
+    bool accessGranted = true;
+    for (int i = 0; i < (int)rules->size(); i++)
+    {
+        AccessRule *rule = rules->at(i);
+        accessGranted = accessGranted && rule->canAccess(criterion);
+    }
+    return accessGranted;
+}

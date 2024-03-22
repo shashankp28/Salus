@@ -63,33 +63,57 @@ void PieceOfInformation::setLastModifiedBy(HierarchyNode *lastModifiedBy)
     }
 }
 
-void PieceOfInformation::setLastModifiedTime(std::time_t lastModifiedTime)
+void PieceOfInformation::setLastModifiedTime()
 {
-    this->lastModifiedTime = lastModifiedTime;
+    this->lastModifiedTime = std::time(0);
 }
 
-void PieceOfInformation::addReadAccessRule(std::string userId, RuleCollection *ruleCollection)
+void PieceOfInformation::addReadAccessRule(std::string id, RuleCollection *ruleCollection)
 {
     if (ruleCollection != nullptr)
     {
-        readAccessList->insert(std::pair<std::string, RuleCollection *>(userId, ruleCollection));
+        readAccessList->insert(std::pair<std::string, RuleCollection *>(id, ruleCollection));
     }
 }
 
-void PieceOfInformation::addWriteAccessRule(std::string userId, RuleCollection *ruleCollection)
+void PieceOfInformation::addWriteAccessRule(std::string id, RuleCollection *ruleCollection)
 {
     if (ruleCollection != nullptr)
     {
-        writeAccessList->insert(std::pair<std::string, RuleCollection *>(userId, ruleCollection));
+        writeAccessList->insert(std::pair<std::string, RuleCollection *>(id, ruleCollection));
     }
 }
 
-void PieceOfInformation::removeReadAccessRule(std::string userId)
+void PieceOfInformation::removeReadAccessRule(std::string id)
 {
-    readAccessList->erase(userId);
+    readAccessList->erase(id);
 }
 
-void PieceOfInformation::removeWriteAccessRule(std::string userId)
+void PieceOfInformation::removeWriteAccessRule(std::string id)
 {
-    writeAccessList->erase(userId);
+    writeAccessList->erase(id);
+}
+
+bool PieceOfInformation::canAccess(HierarchyNode *criterion, AccessType type)
+{
+    std::unordered_map<std::string, RuleCollection *> *targetList;
+    switch (type)
+    {
+    case READ:
+        targetList = readAccessList;
+        break;
+    case WRITE:
+        targetList = writeAccessList;
+        break;
+    }
+    bool accessGranted = false;
+    for (auto const &entry : *targetList)
+    {
+        if (entry.second->canAccess(criterion))
+        {
+            accessGranted = true;
+            break;
+        }
+    }
+    return accessGranted;
 }

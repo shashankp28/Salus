@@ -2,6 +2,7 @@
 #define RULECOLLECTION_H
 
 #include <AccessRule.h>
+#include <HierarchyNode.h>
 #include <vector>
 #include <string>
 
@@ -18,6 +19,7 @@ public:
     void addRule(AccessRule *rule);
     void removeRule(AccessRule *rule);
     void removeRule(int index);
+    bool canAccess(HierarchyNode *criterion);
 };
 
 #endif

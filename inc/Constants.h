@@ -28,4 +28,10 @@ enum HierarchyState
     CONSISTANT,
 };
 
+enum AccessType
+{
+    READ,
+    WRITE
+};
+
 #endif

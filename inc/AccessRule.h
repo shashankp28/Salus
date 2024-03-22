@@ -19,6 +19,7 @@ public:
     void setNode(HierarchyNode *node);
     void setCompareType(CompareType compareType);
     void setDistance(int distance);
+    bool canAccess(HierarchyNode *criterion);
 };
 
 #endif

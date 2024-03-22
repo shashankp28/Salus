@@ -34,18 +34,19 @@ public:
     void renameCriterionFromHierarchy(std::string hierarchyName, std::string criterionName,
                                       std::string newCriterionName);
     void changeCriterionParents(std::string hierarchyName, std::string criterionName,
-                               std::vector<std::string> newParents);
+                                std::vector<std::string> newParents);
     void removeHierarchy(std::string name);
     // Rule Collection Area
     void addNewRuleCollection(std::string name);
-    void removeRuleCollection(std::string name);
     void appendRuleToCollection(std::string collectionName, std::string hierarchyName,
                                 std::string criterionName, std::string compareType,
                                 int distacne);
     void removeRuleFromCollection(std::string collectionName, int index);
+    void removeRuleCollection(std::string name);
     // Access Checker
     bool canRead(std::string hierarchyName, std::string criterionName, std::string id);
-    bool canWrite(std::string hierarchyName, std::string criterionName, std::string id);
+    bool canWrite(std::string username, std::string hierarchyName,
+                  std::string criterionName, std::string id);
     // Engine Metadata Reader
     std::string getPieceOfInformation(std::string id);
     std::string getRuleCollection(std::string name);

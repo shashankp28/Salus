@@ -1,6 +1,8 @@
 #include <Constants.h>
 #include <AccessRule.h>
 #include <HierarchyNode.h>
+#include <HierarchyStructure.h>
+#include <queue>
 
 AccessRule::AccessRule(HierarchyNode *node, CompareType compareType, int distance)
 {
@@ -37,4 +39,66 @@ void AccessRule::setCompareType(CompareType compareType)
 void AccessRule::setDistance(int distance)
 {
     this->distance = distance;
+}
+
+bool AccessRule::canAccess(HierarchyNode *criterion)
+{
+    HierarchyStructure *targetStructure = node->getStructure();
+    HierarchyStructure *currentStructure = criterion->getStructure();
+    if (targetStructure != currentStructure)
+    {
+        return false;
+    }
+    if (node == criterion)
+    {
+        switch (compareType)
+        {
+        case CompareType::EQUAL:
+        case CompareType::LESS_EQUAL:
+        case CompareType::GREATER_EQUAL:
+            return true;
+        default:
+            return false;
+        }
+    }
+    if (compareType == CompareType::EQUAL)
+    {
+        return false;
+    }
+    HierarchyNode *start, *goal;
+    if (compareType == CompareType::GREATER || compareType == CompareType::GREATER_EQUAL)
+    {
+        start = criterion;
+        goal = node;
+    }
+    else
+    {
+        start = node;
+        goal = criterion;
+    }
+    int distance = 0;
+    std::queue<std::pair<HierarchyNode *, int>> q;
+    q.push({start, 0});
+    while (!q.empty())
+    {
+        HierarchyNode *current = q.front().first;
+        int currentDistance = q.front().second;
+        q.pop();
+        std::unordered_map<std::string, HierarchyNode *> *children = current->getChildren();
+        for (auto const &entry : *children)
+        {
+            HierarchyNode *child = entry.second;
+            if (child == goal)
+            {
+                distance = currentDistance + 1;
+                break;
+            }
+            q.push({child, currentDistance + 1});
+        }
+        if (distance != 0)
+        {
+            break;
+        }
+    }
+    return distance <= this->distance;
 }
