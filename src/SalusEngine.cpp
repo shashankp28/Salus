@@ -22,6 +22,8 @@ SalusEngine::SalusEngine(std::string topUser)
     Logging::log(LogLevel::INFO, "Creating Defualt User hierarchy");
     HierarchyNode *topUserNode = new HierarchyNode(topUser, userHierarchy, nullptr);
     userHierarchy->setRoot(topUserNode);
+    userHierarchy->addMember(topUserNode);
+    hierarchies->insert({"User", userHierarchy});
     Logging::log(LogLevel::INFO, "Creating top user: " + topUser);
 }
 
@@ -193,6 +195,7 @@ void SalusEngine::addNewHierarchyStructure(std::string name, std::string root)
     HierarchyNode *rootNode = new HierarchyNode(root, newHierarchy, nullptr);
     newHierarchy->setRoot(rootNode);
     hierarchies->insert({name, newHierarchy});
+    hierarchies->at(name)->addMember(rootNode);
     Logging::log(LogLevel::INFO, "Hierarchy " + name + " added successfully");
 }
 
@@ -259,7 +262,8 @@ void SalusEngine::removeCriterionFromHierarchy(std::string hierarchyName, std::s
     }
     if (targetNode->getChildren()->size() != 0)
     {
-        std::string message = "Criterion " + criterionName + " is not on the edge!";
+        std::string message = "Criterion " + criterionName +
+                              " is not on the edge, cannot be removed!";
         Logging::log(LogLevel::ERROR, message);
         shutdown(message);
     }
