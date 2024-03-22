@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 #include <mutex>
-
+#include <queue>
 
 class Logging
 {
@@ -14,9 +14,11 @@ private:
     static std::string logFilePath;
     static std::ofstream logFile;
     static std::mutex logMutex;
+    static std::queue<std::string> logQueue;
+
     static unsigned maxFileSizeMB;
     static void checkMove();
-    static void logHelper(LogLevel level, std::string message);
+    static void logHelper();
 
 public:
     static void init(std::string logFileName, unsigned maxFileSizeMB, bool clearPrevious = false);

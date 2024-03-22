@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <mutex>
 #include <chrono>
+#include <queue>
 #include <sstream>
 #include <thread>
 #include <cstdio>
@@ -12,6 +13,7 @@
 std::string Logging::logFilePath;
 std::ofstream Logging::logFile;
 std::mutex Logging::logMutex;
+std::queue<std::string> Logging::logQueue;
 unsigned Logging::maxFileSizeMB;
 
 bool directoryExists(const std::string &path)
@@ -51,6 +53,7 @@ std::string getLevelString(LogLevel level)
 
 void Logging::init(std::string logFileName, unsigned maxFileSizeMB, bool clearPrevious)
 {
+    logQueue = std::queue<std::string>();
     if (!directoryExists("./log"))
     {
         if (mkdir("./log", 0777) != 0)
@@ -66,6 +69,8 @@ void Logging::init(std::string logFileName, unsigned maxFileSizeMB, bool clearPr
     }
     logFile.close();
     maxFileSizeMB = maxFileSizeMB;
+    std::thread logThread(&Logging::logHelper);
+    logThread.detach();
 }
 
 void Logging::checkMove()
@@ -91,23 +96,31 @@ void Logging::checkMove()
     }
 }
 
-void Logging::logHelper(LogLevel level, std::string message)
+void Logging::logHelper()
 {
-    logMutex.lock();
-    logFile.open(logFilePath, std::ios::app);
-    std::string fullMessage = "";
-    fullMessage += "[ " + getTimeString() + " ] ";
-    fullMessage += "[ " + getLevelString(level) + " ]: ";
-    fullMessage += message;
-    logFile << fullMessage << std::endl;
-    logFile.flush();
-    logFile.close();
-    checkMove();
-    logMutex.unlock();
+    while (true)
+    {
+        while (!logQueue.empty())
+        {
+            logMutex.lock();
+            logFile.open(logFilePath, std::ios::app);
+            std::string message = logQueue.front();
+            logQueue.pop();
+            logFile << message << std::endl;
+            logFile.flush();
+            logFile.close();
+            checkMove();
+            logMutex.unlock();
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
 }
 
 void Logging::log(LogLevel level, std::string message)
 {
-    std::thread logThread(&Logging::logHelper, level, std::move(message));
-    logThread.detach();
+    std::string fullMessage = "";
+    fullMessage += "[ " + getTimeString() + " ] ";
+    fullMessage += "[ " + getLevelString(level) + " ]: ";
+    fullMessage += message;
+    logQueue.push(fullMessage);
 }

@@ -19,6 +19,6 @@ int main()
     Logging::log(LogLevel::WARN, "Engine Name: " + engineName + " Started Successfully!");
 
     // Wait for Logging to finish
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     return 0;
 }
