@@ -95,3 +95,19 @@ void HierarchyNode::removeChild(HierarchyNode *child)
         children->erase(child->getName());
     }
 }
+
+std::string HierarchyNode::toString()
+{
+    std::string result = "HierarchyNode: " + name + "\n";
+    result += "Parents:\n";
+    for (auto it = parents->begin(); it != parents->end(); it++)
+    {
+        result += it->first + "\n";
+    }
+    result += "Children:\n";
+    for (auto it = children->begin(); it != children->end(); it++)
+    {
+        result += it->first + "\n";
+    }
+    return result;
+}

@@ -20,6 +20,7 @@ public:
     void setCompareType(CompareType compareType);
     void setDistance(int distance);
     bool canAccess(HierarchyNode *criterion);
+    std::string toString();
 };
 
 #endif

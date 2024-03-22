@@ -591,3 +591,66 @@ bool SalusEngine::canWrite(std::string username, std::string hierarchyName,
     }
     return result;
 }
+
+std::string SalusEngine::getPieceOfInformation(std::string id)
+{
+    if (informationBank->find(id) == informationBank->end())
+    {
+        std::string message = "Piece of information " + id + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    PieceOfInformation *piece = informationBank->at(id);
+    std::string result = piece->toString();
+    Logging::log(LogLevel::INFO, "Piece of information metadata " + id + " retrieved");
+    return result;
+}
+
+std::string SalusEngine::getRuleCollection(std::string name)
+{
+    if (ruleCollections->find(name) == ruleCollections->end())
+    {
+        std::string message = "Rule Collection " + name + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    RuleCollection *collection = ruleCollections->at(name);
+    std::string result = collection->toString();
+    Logging::log(LogLevel::INFO, "Rule Collection metadata " + name + " retrieved");
+    return result;
+}
+
+std::string SalusEngine::getHierarchy(std::string name)
+{
+    if (hierarchies->find(name) == hierarchies->end())
+    {
+        std::string message = "Hierarchy " + name + " does not exist";
+        Logging::log(LogLevel::ERROR, message);
+        throw std::runtime_error(message);
+    }
+    HierarchyStructure *hierarchy = hierarchies->at(name);
+    std::string result = hierarchy->toString();
+    Logging::log(LogLevel::INFO, "Hierarchy metadata " + name + " retrieved");
+    return result;
+}
+
+std::vector<std::string> SalusEngine::showAllHierarchies()
+{
+    std::vector<std::string> result = std::vector<std::string>();
+    for (auto it = hierarchies->begin(); it != hierarchies->end(); it++)
+    {
+        result.push_back(it->first);
+    }
+    Logging::log(LogLevel::INFO, "All Hierarchies retrieved");
+    return result;
+}
+std::vector<std::string> SalusEngine::showAllRuleCollections()
+{
+    std::vector<std::string> result = std::vector<std::string>();
+    for (auto it = ruleCollections->begin(); it != ruleCollections->end(); it++)
+    {
+        result.push_back(it->first);
+    }
+    Logging::log(LogLevel::INFO, "All Rule Collections retrieved");
+    return result;
+}

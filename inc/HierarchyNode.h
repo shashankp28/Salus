@@ -29,6 +29,7 @@ public:
     void removeParent(HierarchyNode *parent);
     void removeParents(std::vector<HierarchyNode *> *parents);
     void removeChild(HierarchyNode *child);
+    std::string toString();
 };
 
 #endif

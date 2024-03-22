@@ -58,3 +58,13 @@ bool RuleCollection::canAccess(HierarchyNode *criterion)
     }
     return accessGranted;
 }
+
+std::string RuleCollection::toString()
+{
+    std::string result = "Rule Collection: " + name + "\n";
+    for (int i = 0; i < (int)rules->size(); i++)
+    {
+        result += rules->at(i)->toString() + "\n";
+    }
+    return result;
+}

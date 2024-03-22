@@ -20,6 +20,7 @@ public:
     void removeRule(AccessRule *rule);
     void removeRule(int index);
     bool canAccess(HierarchyNode *criterion);
+    std::string toString();
 };
 
 #endif

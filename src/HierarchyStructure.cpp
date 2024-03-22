@@ -178,3 +178,13 @@ std::string HierarchyStructure::getInconsistantMessage(HierarchyState state)
     Logging::log(LogLevel::ERROR, message);
     return message;
 }
+
+std::string HierarchyStructure::toString()
+{
+    std::string str = "Hierarchy " + name + ":\n";
+    for (auto it = members->begin(); it != members->end(); it++)
+    {
+        str += it->second->toString() + "\n";
+    }
+    return str;
+}

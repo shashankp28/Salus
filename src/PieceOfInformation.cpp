@@ -117,3 +117,25 @@ bool PieceOfInformation::canAccess(HierarchyNode *criterion, AccessType type)
     }
     return accessGranted;
 }
+
+std::string PieceOfInformation::toString()
+{
+    std::string result = "Piece of Information: " + id + "\n";
+    result += "Owner: " + owner->getName() + "\n";
+    result += "Creation Time: " + creationTime;
+    result += "\n";
+    result += "Last Modified By: " + lastModifiedBy->getName() + "\n";
+    result += "Last Modified Time: " + lastModifiedTime;
+    result += "\n";
+    result += "Read Access List: \n";
+    for (auto const &entry : *readAccessList)
+    {
+        result += entry.first + " -> " + entry.second->getName() + "\n";
+    }
+    result += "Write Access List: \n";
+    for (auto const &entry : *writeAccessList)
+    {
+        result += entry.first + " -> " + entry.second->getName() + "\n";
+    }
+    return result;
+}

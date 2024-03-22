@@ -38,6 +38,7 @@ public:
     void removeReadAccessRule(std::string id);
     void removeWriteAccessRule(std::string id);
     bool canAccess(HierarchyNode *criterion, AccessType type);
+    std::string toString();
 };
 
 #endif

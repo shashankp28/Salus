@@ -29,6 +29,7 @@ public:
     void removeMember(std::string name);
     HierarchyState isConsistant();
     std::string getInconsistantMessage(HierarchyState state);
+    std::string toString();
 };
 
 #endif
