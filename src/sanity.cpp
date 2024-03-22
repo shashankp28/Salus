@@ -48,13 +48,11 @@ int main()
     salusEngine->addNewCriterionForHierarchy("Roles", "Admin2", {"Super-Admin"});
     salusEngine->addNewCriterionForHierarchy("Roles", "Admin3", {"Super-Admin"});
     // Add users with all admins as parents
-    salusEngine->addNewCriterionForHierarchy("Roles", "User1", {"Admin1", "Admin2", "Admin3"});
-    salusEngine->addNewCriterionForHierarchy("Roles", "User2", {"Admin1", "Admin2", "Admin3"});
-    salusEngine->addNewCriterionForHierarchy("Roles", "User3", {"Admin1", "Admin2", "Admin3"});
-    salusEngine->addNewCriterionForHierarchy("Roles", "User4", {"Admin1", "Admin2", "Admin3"});
-    salusEngine->addNewCriterionForHierarchy("Roles", "User5", {"Admin1", "Admin2", "Admin3"});
-
-    cout << salusEngine->getHierarchy("Roles") << endl;
+    salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin1", {"Admin1", "Admin2", "Admin3"});
+    salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin2", {"Admin1", "Admin2", "Admin3"});
+    salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin3", {"Admin1", "Admin2", "Admin3"});
+    salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin4", {"Admin1", "Admin2", "Admin3"});
+    salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin6", {"Admin1", "Admin2", "Admin3"});
 
     // Wait for Logging to finish
     std::this_thread::sleep_for(std::chrono::seconds(2));
