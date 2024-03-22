@@ -53,5 +53,7 @@ public:
     std::string getHierarchy(std::string name);
     std::vector<std::string> showAllHierarchies();
     std::vector<std::string> showAllRuleCollections();
+    // Waiting shutdown
+    void shutdown(std::string messages);
 };
 #endif

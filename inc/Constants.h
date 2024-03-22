@@ -33,5 +33,4 @@ enum AccessType
     READ,
     WRITE
 };
-
 #endif
