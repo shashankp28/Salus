@@ -20,8 +20,7 @@ BINARY := $(BINDIR)/sanity
 
 
 # Default target
-lib: $(LIBRARY)
-sanity: $(BINARY) run_sanity
+lib: $(BINARY) run_sanity $(LIBRARY)
 run_sanity:
 	@echo "Running sanity check..."
 	@$(BINARY)

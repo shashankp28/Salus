@@ -18,6 +18,9 @@ int main()
     Logging::log(LogLevel::FATAL, "This is a fatal message");
     Logging::log(LogLevel::WARN, "Engine Name: " + engineName + " Started Successfully!");
 
+
+    
+
     // Wait for Logging to finish
     std::this_thread::sleep_for(std::chrono::seconds(2));
     return 0;
