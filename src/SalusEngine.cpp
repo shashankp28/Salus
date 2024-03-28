@@ -541,8 +541,8 @@ bool SalusEngine::canRead(std::string hierarchyName, std::string criterionName, 
     bool result = piece->canAccess(criterion, AccessType::READ);
     if (result)
     {
-        Logging::log(LogLevel::DEBUG, "Criterion: " + hierarchyName +
-                                          "::" + criterionName + " can read Info:" + id);
+        Logging::log(LogLevel::INFO, "Criterion: " + hierarchyName +
+                                         "::" + criterionName + " can read Info:" + id);
     }
     else
     {
@@ -585,8 +585,8 @@ bool SalusEngine::canWrite(std::string username, std::string hierarchyName,
     bool result = piece->canAccess(criterion, AccessType::WRITE);
     if (result)
     {
-        Logging::log(LogLevel::DEBUG, "User: " + username + " can write to Criterion: " +
-                                          hierarchyName + "::" + criterionName + " Info:" + id);
+        Logging::log(LogLevel::INFO, "User: " + username + " can write to Criterion: " +
+                                         hierarchyName + "::" + criterionName + " Info:" + id);
         piece->setLastModifiedBy(user);
         piece->setLastModifiedTime();
     }
@@ -626,7 +626,7 @@ std::string SalusEngine::getRuleCollection(std::string name)
     return result;
 }
 
-std::string SalusEngine::getHierarchy(std::string name)
+std::string SalusEngine::getHierarchyStructure(std::string name)
 {
     if (hierarchies->find(name) == hierarchies->end())
     {

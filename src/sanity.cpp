@@ -2,7 +2,21 @@
 #include <SalusEngine.h>
 #include <Logging.h>
 #include <thread>
+#include <iomanip>
+#include <sstream>
 #include <chrono>
+
+unsigned int hasher(const std::string &str)
+{
+    unsigned int largePrime = 1000000007;
+    unsigned int largePrime2 = 1000000009;
+    unsigned int hash = 0;
+    for (int i = 0; i < (int)str.length(); i++)
+    {
+        hash = (hash * 256 + largePrime2 * str[i]) % largePrime;
+    }
+    return hash;
+}
 
 using namespace std;
 
@@ -54,6 +68,7 @@ int main()
     salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin4", {"Admin1", "Admin2", "Admin3"});
     salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin6", {"Admin1", "Admin2", "Admin3"});
 
+    cout << hasher(salusEngine->get) << endl;
     // Wait for Logging to finish
     std::this_thread::sleep_for(std::chrono::seconds(2));
     return 0;

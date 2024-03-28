@@ -50,7 +50,7 @@ public:
     // Engine Metadata Reader
     std::string getPieceOfInformation(std::string id);
     std::string getRuleCollection(std::string name);
-    std::string getHierarchy(std::string name);
+    std::string getHierarchyStructure(std::string name);
     std::vector<std::string> showAllHierarchies();
     std::vector<std::string> showAllRuleCollections();
     // Waiting shutdown
