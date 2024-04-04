@@ -181,39 +181,14 @@ std::string HierarchyStructure::getInconsistantMessage(HierarchyState state)
 
 std::string HierarchyStructure::toString()
 {
-    std::string str = "Hierarchy " + name + ":\n";
-    HierarchyNode *root = getRoot();
-    std::queue<std::pair<HierarchyNode *, int>> queue;
-    queue.push({root, 0});
-    std::unordered_map<int, std::vector<HierarchyNode *>> levels;
-    while (!queue.empty())
+    std::string result = "{\n";
+    result += "\t'name': '" + name + "',\n";
+    result += "\t'root': '" + root->getName() + "',\n";
+    result += "\t'members': [";
+    for (auto const &entry : *members)
     {
-        std::pair<HierarchyNode *, int> current = queue.front();
-        queue.pop();
-        if (levels.find(current.second) == levels.end())
-        {
-            levels.insert({current.second, std::vector<HierarchyNode *>()});
-        }
-        levels[current.second].push_back(current.first);
-        for (int i = 0; i < current.second; i++)
-        {
-            str += "  ";
-        }
-        str += current.first->getName() + "\n";
-        for (auto it = current.first->getChildren()->begin(); it != current.first->getChildren()->end(); it++)
-        {
-            queue.push({it->second, current.second + 1});
-        }
+        result += entry.second->toString() + ", ";
     }
-    std::string levelStr = "";
-    for (auto it = levels.begin(); it != levels.end(); it++)
-    {
-        levelStr += "Level " + std::to_string(it->first) + ": ";
-        for (auto jt = it->second.begin(); jt != it->second.end(); jt++)
-        {
-            levelStr += (*jt)->getName() + " ";
-        }
-        levelStr += "\n";
-    }
-    return str;
+    result += "],\n";
+    return result + "\n}";
 }

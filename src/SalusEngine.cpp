@@ -9,6 +9,18 @@
 #include <chrono>
 #include <AccessRule.h>
 
+std::string characterReplace(std::string &str, char target, char replacement)
+{
+    for (int i = 0; i < (int)str.size(); i++)
+    {
+        if (str[i] == target)
+        {
+            str[i] = replacement;
+        }
+    }
+    return str;
+}
+
 SalusEngine::SalusEngine(std::string topUser)
 {
     // Initializing variables
@@ -608,6 +620,7 @@ std::string SalusEngine::getPieceOfInformation(std::string id)
     }
     PieceOfInformation *piece = informationBank->at(id);
     std::string result = piece->toString();
+    characterReplace(result, 39, 34);
     Logging::log(LogLevel::INFO, "Piece of information metadata " + id + " retrieved");
     return result;
 }
@@ -622,6 +635,7 @@ std::string SalusEngine::getRuleCollection(std::string name)
     }
     RuleCollection *collection = ruleCollections->at(name);
     std::string result = collection->toString();
+    characterReplace(result, 39, 34);
     Logging::log(LogLevel::INFO, "Rule Collection metadata " + name + " retrieved");
     return result;
 }
@@ -636,6 +650,7 @@ std::string SalusEngine::getHierarchyStructure(std::string name)
     }
     HierarchyStructure *hierarchy = hierarchies->at(name);
     std::string result = hierarchy->toString();
+    characterReplace(result, 39, 34);
     Logging::log(LogLevel::INFO, "Hierarchy metadata " + name + " retrieved");
     return result;
 }

@@ -109,29 +109,31 @@ bool AccessRule::canAccess(HierarchyNode *criterion)
 
 std::string AccessRule::toString()
 {
-    std::string result = "AccessRule: ";
-    result += std::to_string(distance);
+    std::string compareTypeStr;
     switch (compareType)
     {
     case CompareType::EQUAL:
-        result += " == ";
-        break;
-    case CompareType::LESS:
-        result += " < ";
-        break;
-    case CompareType::LESS_EQUAL:
-        result += " <= ";
-        break;
-    case CompareType::GREATER:
-        result += " > ";
-        break;
-    case CompareType::GREATER_EQUAL:
-        result += " >= ";
+        compareTypeStr = "EQUAL";
         break;
     case CompareType::NOT_EQUAL:
-        result += " != ";
+        compareTypeStr = "NOT_EQUAL";
+        break;
+    case CompareType::GREATER:
+        compareTypeStr = "GREATER";
+        break;
+    case CompareType::LESS:
+        compareTypeStr = "LESS";
+        break;
+    case CompareType::GREATER_EQUAL:
+        compareTypeStr = "GREATER_EQUAL";
+        break;
+    case CompareType::LESS_EQUAL:
+        compareTypeStr = "LESS_EQUAL";
         break;
     }
-    result += node->getStructure()->getName() + "::" + node->getName();
-    return result;
+    std::string result = "{\n";
+    result += "\t'compare_type': '" + compareTypeStr + "',\n";
+    result += "\t'node': '" + node->toString() + "',\n";
+    result += "\t'distance': " + std::to_string(distance) + "'\n";
+    return result + "\n}";
 }

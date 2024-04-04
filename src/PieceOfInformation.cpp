@@ -120,22 +120,25 @@ bool PieceOfInformation::canAccess(HierarchyNode *criterion, AccessType type)
 
 std::string PieceOfInformation::toString()
 {
-    std::string result = "Piece of Information: " + id + "\n";
-    result += "Owner: " + owner->getName() + "\n";
-    result += "Creation Time: " + creationTime;
-    result += "\n";
-    result += "Last Modified By: " + lastModifiedBy->getName() + "\n";
-    result += "Last Modified Time: " + lastModifiedTime;
-    result += "\n";
-    result += "Read Access List: \n";
+    std::string creationTimeStr = std::ctime(&creationTime);
+    std::string lastModifiedTimeStr = std::ctime(&lastModifiedTime);
+    std::string result = "{\n";
+    result += "\t'id': '" + getId() + "',\n";
+    result += "\t'owner': '" + owner->getName() + "',\n";
+    result += "\t'created_at': '" + creationTimeStr + "'\n";
+    result += "\t'modified_by': '" + getLastModifiedBy()->getName() + "',\n";
+    result += "\t'modified_at': '" + lastModifiedTimeStr + "',\n";
+    result += "\t'read_access_list': [";
     for (auto const &entry : *readAccessList)
     {
-        result += entry.first + " -> " + entry.second->getName() + "\n";
+        result += "'" + entry.second->getName() + "', ";
     }
-    result += "Write Access List: \n";
+    result += "],\n";
+    result += "\t'write_access_list': [";
     for (auto const &entry : *writeAccessList)
     {
-        result += entry.first + " -> " + entry.second->getName() + "\n";
+        result += "'" + entry.second->getName() + "', ";
     }
-    return result;
+    result += "],\n";
+    return result + "\n}";
 }

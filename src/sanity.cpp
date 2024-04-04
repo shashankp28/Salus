@@ -6,19 +6,31 @@
 #include <sstream>
 #include <chrono>
 
-unsigned int hasher(const std::string &str)
+using namespace std;
+
+unsigned int hasher(const string &str)
 {
     unsigned int largePrime = 1000000007;
     unsigned int largePrime2 = 1000000009;
     unsigned int hash = 0;
     for (int i = 0; i < (int)str.length(); i++)
     {
-        hash = (hash * 256 + largePrime2 * str[i]) % largePrime;
+        hash += (hash * 256 + largePrime2 * str[i]) % largePrime;
+        hash %= largePrime;
     }
-    return hash;
+    return hash%largePrime;
 }
 
-using namespace std;
+void assert(bool condition, string message)
+{
+    if (!condition)
+    {
+        Logging::log(LogLevel::FATAL, message);
+        cerr << message << endl;
+        this_thread::sleep_for(std::chrono::seconds(2));
+        exit(1);
+    }
+}
 
 int main()
 {
@@ -66,10 +78,18 @@ int main()
     salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin2", {"Admin1", "Admin2", "Admin3"});
     salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin3", {"Admin1", "Admin2", "Admin3"});
     salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin4", {"Admin1", "Admin2", "Admin3"});
+    salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin5", {"Admin1", "Admin2", "Admin3"});
     salusEngine->addNewCriterionForHierarchy("Roles", "Sub-Admin6", {"Admin1", "Admin2", "Admin3"});
 
-    cout << hasher(salusEngine->get) << endl;
+    // Check hierarchy structure
+    assert(hasher(salusEngine->getHierarchyStructure("User")) == 463437768,
+           "User Hierarchy is incorrect");
+    assert(hasher(salusEngine->getHierarchyStructure("Clearance")) == 648954189,
+           "Clearance Hierarchy is incorrect");
+    assert(hasher(salusEngine->getHierarchyStructure("Roles")) == 108644618,
+           "Roles Hierarchy is incorrect");
+
     // Wait for Logging to finish
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    this_thread::sleep_for(std::chrono::seconds(2));
     return 0;
 }
