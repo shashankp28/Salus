@@ -89,6 +89,9 @@ int main()
     assert(hasher(salusEngine->getHierarchyStructure("Roles")) == 108644618,
            "Roles Hierarchy is incorrect");
 
+    // Create Rule Collections
+    salusEngine->
+
     // Wait for Logging to finish
     this_thread::sleep_for(std::chrono::seconds(2));
     return 0;
