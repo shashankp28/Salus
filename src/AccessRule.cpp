@@ -133,7 +133,7 @@ std::string AccessRule::toString()
     }
     std::string result = "{\n";
     result += "\t'compare_type': '" + compareTypeStr + "',\n";
-    result += "\t'node': '" + node->toString() + "',\n";
+    result += "\t'node': '" + node->getName() + "',\n";
     result += "\t'distance': " + std::to_string(distance) + "'\n";
     return result + "\n}";
 }

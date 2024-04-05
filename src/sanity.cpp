@@ -90,8 +90,27 @@ int main()
            "Roles Hierarchy is incorrect");
 
     // Create Rule Collections
-    salusEngine->
+    salusEngine->addNewRuleCollection("user-rules");
+    salusEngine->addNewRuleCollection("clearance-rules");
+    salusEngine->addNewRuleCollection("roles-rules");
+    
+    // Add Access rules to rules collection
+    salusEngine->appendRuleToCollection("user-rules", "User", "user0", "<=", 1);
+    salusEngine->appendRuleToCollection("user-rules", "User", "user4", ">", 2);
+    salusEngine->appendRuleToCollection("user-rules", "User", "user5", "==", 1);
+    salusEngine->appendRuleToCollection("clearance-rules", "Clearance", "5", ">", 3);
+    salusEngine->appendRuleToCollection("clearance-rules", "Clearance", "5", "<", 2);
+    salusEngine->appendRuleToCollection("clearance-rules", "Clearance", "0", ">=", 5);
+    salusEngine->appendRuleToCollection("roles-rules", "Roles", "Super-Admin", "==", 1);
+    salusEngine->appendRuleToCollection("roles-rules", "Roles", "Admin2", ">", 3);
+    salusEngine->appendRuleToCollection("roles-rules", "Roles", "Sub-Admin2", ">=", 2);
+   
+    assert(939460473 == hasher(salusEngine->getRuleCollection("user-rules")), "User rules not set properly!");
+    assert(861244991 == hasher(salusEngine->getRuleCollection("clearance-rules")), "Clearance Rules not set properly!");
+    assert(249120230 == hasher(salusEngine->getRuleCollection("roles-rules")), "Roles rules not set properly");
 
+    // Create Piece of Information 
+    
     // Wait for Logging to finish
     this_thread::sleep_for(std::chrono::seconds(2));
     return 0;
