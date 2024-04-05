@@ -125,7 +125,7 @@ std::string PieceOfInformation::toString()
     std::string result = "{\n";
     result += "\t'id': '" + getId() + "',\n";
     result += "\t'owner': '" + owner->getName() + "',\n";
-    result += "\t'created_at': '" + creationTimeStr + "'\n";
+    result += "\t'created_at': '" + creationTimeStr + "',\n";
     result += "\t'modified_by': '" + getLastModifiedBy()->getName() + "',\n";
     result += "\t'modified_at': '" + lastModifiedTimeStr + "',\n";
     result += "\t'read_access_list': [";

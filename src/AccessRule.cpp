@@ -1,3 +1,4 @@
+#include <iostream>
 #include <Constants.h>
 #include <AccessRule.h>
 #include <HierarchyNode.h>
@@ -49,6 +50,7 @@ bool AccessRule::canAccess(HierarchyNode *criterion)
     {
         return false;
     }
+    std::cout << node->getName() << " " << criterion->getName() << std::endl;
     if (node == criterion)
     {
         switch (compareType)
@@ -100,9 +102,10 @@ bool AccessRule::canAccess(HierarchyNode *criterion)
             break;
         }
     }
-    if (distance == 0 && compareType == CompareType::NOT_EQUAL)
+    std::cout << "Disatnce Measured: " << distance << "Target Distance: " << this->distance << std::endl;
+    if (distance == 0)
     {
-        return true;
+        return compareType == CompareType::NOT_EQUAL;
     }
     return distance <= this->distance;
 }
